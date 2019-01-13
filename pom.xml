@@ -8,6 +8,12 @@
     <description>
         Recepes and Coctails DB with JavaBackend
     </description>
+
+    <groupId>de.tel-ran</groupId>
+    <artifactId>Recipes</artifactId>
+    <version>0.0.1</version>
+    <packaging>jar</packaging>
+
     <developers>
         <developer>
             <id>Telran</id>
@@ -16,10 +22,6 @@
             <timezone>ECT</timezone>
         </developer>
     </developers>
-
-    <groupId>de.tel-ran</groupId>
-    <artifactId>Recipes</artifactId>
-    <version>1.0 - SNAPSHOT</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -39,6 +41,24 @@
                 </configuration>
             </plugin>
 
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.2.0</version>
+                <configuration>
+                    <imageName>dockercoocing</imageName>
+                    <baseImage>java</baseImage>
+                    <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+                    <!-- copy the service's jar file from target into the root directory of the image -->
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -56,6 +76,6 @@
             <scope>test</scope>
         </dependency>
 
-        </dependencies>
+    </dependencies>
 
 </project>
