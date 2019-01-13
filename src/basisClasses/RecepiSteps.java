@@ -1,3 +1,4 @@
+package basisClasses;
 
 public class RecepiSteps {
     private byte stepID;
