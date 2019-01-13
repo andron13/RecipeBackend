@@ -1,0 +1,10 @@
+version: '3.7'
+
+services:
+
+  app:
+    image: openjdk:8u191-jre-alpine
+    volumes:
+      - ./src:/usr/src/myapp
+      - /recipe/start.sh:/usr/src/start.sh
+    environment: /usr/src/start.sh
