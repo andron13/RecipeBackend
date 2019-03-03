@@ -22,3 +22,13 @@ target/
 
 ###  Config Files andron13
 *.cnf
+
+add on 3.3.19
+
+/.classpath
+/.factorypath
+/DB-and-API/*.vsdm
+
+# i don't know what ".project" means
+/.project
+/*.stackdump

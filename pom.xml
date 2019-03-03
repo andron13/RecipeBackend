@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <name>RecipesAndCocktails</name>
+    <name>Cocktails</name>
     <description>
-        Recipes and Cocktails DB with JavaBackend
+        Cocktails DB with JavaBackend
     </description>
 
     <parent>
@@ -17,7 +17,7 @@
     </parent>
     <groupId>de.tel-ran</groupId>
     <artifactId>Recipes</artifactId>
-    <version>0.0.1</version>
+    <version>0.1.0</version>
     <packaging>war</packaging>
     <developers>
         <developer>

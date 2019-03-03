@@ -3,8 +3,9 @@ package de.recipe.service;
 import de.recipe.model.Cocktail;
 import de.recipe.web.CocktailWeb;
 import de.recipe.web.CocktailWebOutput;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
+
 @Service
 public interface CocktailService<Y, T> {
     public List <CocktailWebOutput> getAllCocktail();

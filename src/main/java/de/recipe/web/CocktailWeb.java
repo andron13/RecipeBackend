@@ -1,12 +1,7 @@
 package de.recipe.web;
 
-import de.recipe.model.Ingredient;
-import de.recipe.model.Photo;
-import de.recipe.model.User;
-import lombok.Data;
-
-import java.util.Date;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class CocktailWeb {

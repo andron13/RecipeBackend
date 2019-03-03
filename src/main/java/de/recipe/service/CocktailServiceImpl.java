@@ -3,15 +3,14 @@ package de.recipe.service;
 import de.exeption.NotFoundCocktailById;
 import de.recipe.model.Cocktail;
 import de.recipe.repository.CocktailRepository;
-import de.recipe.web.CocktailWebOutput;
 import de.recipe.web.CocktailWeb;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
+import de.recipe.web.CocktailWebOutput;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CocktailServiceImpl<Y, T> implements CocktailService {

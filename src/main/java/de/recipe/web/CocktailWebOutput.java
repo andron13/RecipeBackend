@@ -1,16 +1,8 @@
 package de.recipe.web;
 
-import de.recipe.model.Ingredient;
-import de.recipe.model.Photo;
-import de.recipe.model.User;
-import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
-
-import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class CocktailWebOutput {

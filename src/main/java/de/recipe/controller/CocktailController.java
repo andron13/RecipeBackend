@@ -1,15 +1,22 @@
-package de.cocktail.controller;
-import de.cocktail.service.CocktailService;
-import de.cocktail.web.CocktailWeb;
-import de.cocktail.web.CocktailWebOutput;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+package de.recipe.controller;
+
+import de.recipe.service.CocktailService;
+import de.recipe.web.CocktailWeb;
+import de.recipe.web.CocktailWebOutput;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 
 public class CocktailController {
-  private  CocktailService cocktailService;
+  private CocktailService cocktailService;
 
     @Autowired
     public CocktailController( CocktailService cocktailService) {
