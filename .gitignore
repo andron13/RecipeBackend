@@ -22,3 +22,7 @@ target/
 
 ###  Config Files andron13
 *.cnf
+.classpath
+.factorypath
+*.vsdm
+.project
