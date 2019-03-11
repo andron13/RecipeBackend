@@ -1,4 +1,4 @@
-/*import com.sun.org.glassfish.external.arc.Taxonomy;
+/*mport com.sun.org.glassfish.external.arc.Taxonomy;
 import de.Main;
 import de.cocktail.controller.CocktailController;
 import de.cocktail.model.*;
@@ -40,12 +40,16 @@ public class testServiceImpl {
     private Cocktail cocktail = new Cocktail("Spaghetti BologneseTuna pasta sauce", "The easiest pasta dish you will ever make with just 5 ingredients in 15 min, loaded with Parmesan and crisp bacon goodness!", new Date(), new User("Iurie Railean1"), ingredientList, recepiSteps, taxonomyList, 15, 112, photoList, videoList);
 
     private List <IngredientWeb> ingredientWebsList = Arrays.asList(new IngredientWeb("pepper", "salt and freshly ground pepper"));
-    private List <RecepiStepWeb> recepiStepsWeb = Arrays.asList(new RecepiStepWeb("1", "Heat the oil in a large"));
-    private List <TaxonomyWeb> taxonomyWebsList = Arrays.asList(new TaxonomyWeb("Italia"));
+  //  private List <RecepiStepWeb> recepiStepsWeb = Arrays.asList(new RecepiStepWeb("1", "Heat the oil in a large"));
+  //  private List <TaxonomyWeb> taxonomyWebsList = Arrays.asList(new TaxonomyWeb("Italia"));
     private List <PhotoWeb> photoWebsList = Arrays.asList(new PhotoWeb("1https://hips.hearstapps.com/del.h-cdn.co/assets/17/03/2560x1706/gallery-1484784941-white-cheddar-carbonaral1.jpg?resize=768:*"));
-    private List <VideoWeb> videoWebListList = Arrays.asList(new VideoWeb("1https://www.youtube.com/embed/D_2DBLAt57c"));
+ //  private List <VideoWeb> videoWebListList = Arrays.asList(new VideoWeb("1https://www.youtube.com/embed/D_2DBLAt57c"));
     private CocktailWebOutput recipeWebOutput = new CocktailWebOutput(1L, "Spaghetti BologneseTuna pasta sauce", "The easiest pasta dish you will ever make with just 5 ingredients in 15 min, loaded with Parmesan and crisp bacon goodness!",  new Userweb("Iurie Railean1"), ingredientWebsList, recepiStepsWeb, taxonomyWebsList, 15, 112, photoWebsList, videoWebListList);
     private List <CocktailWebOutput> recipeWebOutputs = Arrays.asList();
+
+    @Autowired
+    private CocktailRepository cocktailRepository;
+
 
     @Autowired
     private MockMvc mockMvc;
@@ -56,11 +60,11 @@ public class testServiceImpl {
     @Autowired
     private CocktailService cocktailService;
     @Autowired
-    CocktailController recipeController;
+    CocktailController cocktailController;
 
     @Test
     public void testServiceGetAll() {
-        List <CocktailWebOutput> listService = recipeController.getAllCocktails();
+        List <CocktailWebOutput> listService = cocktailController.getAllCocktails();
         List <Cocktail> listrepo = recipeRepository.findAll();
         Assert.assertEquals(listService.size(), listrepo.size());
         Assert.assertEquals(listrepo, listService);
@@ -77,5 +81,4 @@ public class testServiceImpl {
 
 
     }
-}
-*/
+}*/

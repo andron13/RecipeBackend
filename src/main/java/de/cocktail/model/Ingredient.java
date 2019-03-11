@@ -27,5 +27,4 @@ public class Ingredient implements Serializable {
     public Ingredient() {
     }
 
-
 }

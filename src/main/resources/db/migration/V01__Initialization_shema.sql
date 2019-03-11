@@ -1,4 +1,4 @@
-create table cocktail
+create table Cocktail
 (
   id              bigint auto_increment
 
