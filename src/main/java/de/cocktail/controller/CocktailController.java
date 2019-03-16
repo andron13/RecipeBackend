@@ -40,19 +40,22 @@ public class CocktailController {
 
     @GetMapping("/cocktails/")
     public ResponseEntity<List<CocktailWebOutput>> getAllCocktails() {
-        return ResponseEntity.ok(cocktailService.getAllCocktail());
+        return ResponseEntity.ok()
+                .body(cocktailService.getAllCocktail());
 
     }
 
     @PostMapping("cocktails/")
     public void saveCocktail(@RequestBody CocktailWeb cocktailWeb) {
         cocktailService.creatCocktail(cocktailWeb);
+        ResponseEntity.ok().build();
     }
 
     @GetMapping("/cocktails/{id}" )
     public ResponseEntity<CocktailWebOutput> getCocktailById(@PathVariable Long id) {
         return ResponseEntity.
-                ok(cocktailService.getCocktailById(id));
+                ok().
+                body(cocktailService.getCocktailById(id));
 
     }
 
@@ -64,14 +67,15 @@ public class CocktailController {
 
     @GetMapping( "/cocktails/title/{title}/" )
     public ResponseEntity<CocktailWebOutput> findCocktailByTitle(@PathVariable String title) {
-        return ResponseEntity.ok(cocktailService.findByTitle(title));
+        return ResponseEntity.ok()
+                .body(cocktailService.findByTitle(title));
     }
 
     @PutMapping( "/cocktails/{id}" )
     public ResponseEntity<CocktailWebOutput>   updateCocktailById(@RequestBody CocktailWebOutput cocktailWebOutput,@PathVariable Long id) {
         cocktailService.updateCocktail(cocktailWebOutput, id);
-        return ResponseEntity.ok
-                (cocktailService.getCocktailById(id));
+        return ResponseEntity.ok()
+                .body(cocktailService.getCocktailById(id));
     }
 
 }
