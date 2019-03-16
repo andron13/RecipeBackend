@@ -1,12 +1,14 @@
 package de.cocktail.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.springframework.transaction.annotation.Transactional;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Data
 @Table
@@ -14,12 +16,8 @@ import javax.persistence.*;
 public class Photo {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String patch;
-
-    public Photo() {
-    }
-
 }

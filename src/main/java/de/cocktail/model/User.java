@@ -1,12 +1,16 @@
 package de.cocktail.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Transactional
 @Entity
 @Data
@@ -19,8 +23,5 @@ public class User implements Serializable {
     private Long id;
 
     private String name;
-
-    public User() {
-    }
 
 }

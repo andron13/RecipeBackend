@@ -1,12 +1,16 @@
 package de.cocktail.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Transactional
 @Entity
 @Data
@@ -14,17 +18,18 @@ import java.io.Serializable;
 @Table
 public class Ingredient implements Serializable {
 
+
+
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-@Column(name = "TITLE")
+    @Column(name = "TITLE")
     private String title;
 
 
     private String description;
 
-    public Ingredient() {
-    }
+
 
 }

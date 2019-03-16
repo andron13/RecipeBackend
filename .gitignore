@@ -14,6 +14,7 @@ indexpath/
 *.tmp
 *.exe
 *.log
+*.application.properties
 
 thumbs.db
 .DS_Store

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public interface CocktailService<Y, T> {
-    public List <CocktailWebOutput> getAllCocktail();
+    public List <CocktailWebOutput> getAllCocktails();
 
     public CocktailWebOutput getCocktailById(Long id);
 

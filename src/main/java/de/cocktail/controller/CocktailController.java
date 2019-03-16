@@ -20,7 +20,7 @@ public class CocktailController {
     }
 
 
-    @GetMapping( "/cocktails/ingredients/{name_ingredient}" )
+    @GetMapping("/cocktails/ingredients/{name_ingredient}")
     public Response findCocktailsByIngredient(@PathVariable String name_ingredient) {
         return Response.
                 status(Response.Status.OK)
@@ -42,7 +42,7 @@ public class CocktailController {
     @GetMapping("/cocktails/")
     public Response getAllCocktails() {
         return Response.status(Response.Status.OK)
-                .entity(cocktailService.getAllCocktail())
+                .entity(cocktailService.getAllCocktails())
                 .type(MediaType.APPLICATION_JSON_TYPE)
                 .build();
 
@@ -58,7 +58,7 @@ public class CocktailController {
                 .build();
     }
 
-    @GetMapping("/cocktails/{id}" )
+    @GetMapping("/cocktails/{id}")
     public Response getCocktailById(@PathVariable Long id) {
         return Response.
                 status(Response.Status.OK)
@@ -68,17 +68,17 @@ public class CocktailController {
 
     }
 
-    @DeleteMapping( "/cocktails/{id}" )
+    @DeleteMapping("/cocktails/{id}")
     public Response deleteCocktailByID(@PathVariable Long id) {
         cocktailService.deleteCocktailById(id);
-       return Response
-               .ok()
-               .language("en")
-               .build();
+        return Response
+                .ok()
+                .language("en")
+                .build();
     }
 
 
-    @GetMapping( "/cocktails/title/{title}/" )
+    @GetMapping("/cocktails/title/{title}/")
     public Response findCocktailByTitle(@PathVariable String title) {
         return Response.status(Response.Status.OK)
                 .entity(cocktailService.findByTitle(title))
@@ -87,8 +87,8 @@ public class CocktailController {
 
     }
 
-    @PutMapping( "/cocktails/{id}" )
-    public Response updateCocktailById(@RequestBody CocktailWebOutput cocktailWebOutput,@PathVariable Long id) {
+    @PutMapping("/cocktails/{id}")
+    public Response updateCocktailById(@RequestBody CocktailWebOutput cocktailWebOutput, @PathVariable Long id) {
         cocktailService.updateCocktail(cocktailWebOutput, id);
         return Response.status(Response.Status.OK)
                 .type(MediaType.APPLICATION_JSON_TYPE)

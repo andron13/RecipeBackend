@@ -26,7 +26,7 @@ public class CocktailServiceImpl<Y, T> implements CocktailService {
 
 
 
-    public List <CocktailWebOutput> getAllCocktail() {
+    public List <CocktailWebOutput> getAllCocktails() {
         List <Cocktail> outputList = cocktailRepository.findAll();
         List <CocktailWebOutput> outputList1 = outputList.stream().map(this::creatCocktailWebOutputToRecipe).collect(Collectors.toList());
         if (outputList.isEmpty()) throw new NotFoundCocktailById("Cocktail is NotFound");

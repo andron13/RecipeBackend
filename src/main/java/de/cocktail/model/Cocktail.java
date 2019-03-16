@@ -1,7 +1,9 @@
 package de.cocktail.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -12,6 +14,8 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Transactional
 @Entity
 @EqualsAndHashCode
@@ -20,7 +24,7 @@ import java.util.List;
 public class Cocktail implements Serializable {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.IDENTITY )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private Long id;
 
@@ -31,16 +35,16 @@ public class Cocktail implements Serializable {
 
     @CreationTimestamp
     @Column
-    @Temporal( TemporalType.TIMESTAMP )
+    @Temporal(TemporalType.TIMESTAMP)
     private Date publicationDate;
 
-    @OneToOne( cascade = CascadeType.ALL, targetEntity = User.class )
+    @OneToOne(cascade = CascadeType.ALL, targetEntity = User.class)
 
     private User author;
 
-    @ManyToMany( cascade = CascadeType.ALL, targetEntity = Ingredient.class )
-    @LazyCollection( LazyCollectionOption.FALSE )
-    private List <Ingredient> ingredients;
+    @ManyToMany(cascade = CascadeType.ALL, targetEntity = Ingredient.class)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Ingredient> ingredients;
 
     @Column
     private int prepTimeMinute;
@@ -48,15 +52,9 @@ public class Cocktail implements Serializable {
     @Column
     private int cookingTime;
 
-    @ManyToMany( cascade = CascadeType.ALL )
-    @LazyCollection( LazyCollectionOption.FALSE )
+    @ManyToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
 
-    private List <Photo> image;
+    private List<Photo> image;
 
-
-
-    public Cocktail() {
-    }
-
-
-    }
+}
