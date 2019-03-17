@@ -1,10 +1,10 @@
 /* add user */
 
-insert into user(user_loginname, user_email, user_password)
-values ('andron13', 'andron13@gmail.com', '123456'),
-       ('Juri', 'test1@test.dev', '123456'),
-       ('Elena', 'test2@test.dev', '123456'),
-       ('Dmitri', 'test3@test.dev', '123456');
+insert into user(user_id,user_loginname, user_email, user_password)
+values (1,'andron13', 'andron13@gmail.com', '123456'),
+       (2,'Juri', 'test1@test.dev', '123456'),
+       (3,'Elena', 'test2@test.dev', '123456'),
+       (4,'Dmitri', 'test3@test.dev', '123456');
 
 /* add 1 photo */
 
@@ -23,7 +23,7 @@ values (1, 'Андрей', 'Подлубный');
 
 /* add ingredient */
 
-insert into ingredient (ingredient_title, description, fk_ingredient_photo_id)
+insert into ingredient (ingredient_title,ingredient_description, fk_ingredient_photo_id)
 values ('Водка', 'Водка, один из самых популярных ингредиентов для коктейлей', 3),
        ('Томатный сок', 'Томатный сок входит в состав многих алкогольных и безалкогольных коктейлей', 3),
        ('Текила', 'Описание Текилы', 3),
@@ -57,19 +57,19 @@ insert into cocktail (cocktail_title,
                       fk_photo_id)
 values ('Кровавая мери',
         'Описание создания коктейля Кровавая мери',
-        '', '', '2019-03-10', 1, 1),
+        1, 2, '2019-03-10', 1, 1),
        ('Sex on the beach',
         'Описание создания коктейля Sex on the beach',
-        '', '', '2019-03-10', 2, 2),
+        2, 3, '2019-03-10', 2, 2),
        ('Белый русский',
         'Описание создания коктейля Белый русский',
-        '', '', '2019-03-10', 3, 1),
+        3, 4, '2019-03-10', 3, 1),
        ('Виски с содовой',
         'Описание создания коктейля Виски с содовой',
-        '', '', '2019-03-10', 4, 2),
+        4, 5, '2019-03-10', 4, 2),
        ('Ромовый горячий шоколад',
         'Описание создания коктейля Ромовый горячий шоколад',
-        '', '', '2019-03-10', 1, 1);
+        5,6, '2019-03-10', 1, 1);
 
 /* add cocktail_ingredients */
 

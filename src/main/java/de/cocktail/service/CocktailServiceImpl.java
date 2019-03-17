@@ -62,11 +62,11 @@ public class CocktailServiceImpl<Y, T> implements CocktailService {
     }
 
     public List<Cocktail> findByIngredientsContaining(String nameIngredient) {
-        return cocktailRepository.findByIngredientsTitle(nameIngredient);
+        return null;// cocktailRepository//.findByIngredients_title(nameIngredient);
     }
 
     public List <CocktailWebOutput> findbyAuthor(String name_author) {
-        List <Cocktail> byAuthorName = cocktailRepository.findByAuthor_Name(name_author);
+        List <Cocktail> byAuthorName = cocktailRepository.findByUser_Name(name_author);
         if (byAuthorName.isEmpty()) throw new NotFoundCocktailById("This  name does not exist");
         return byAuthorName.stream().map(this::creatCocktailWebOutputToRecipe).collect(Collectors.toList());
     }

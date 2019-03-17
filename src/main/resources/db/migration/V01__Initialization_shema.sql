@@ -33,9 +33,9 @@ create table if not exists ingredient
 
 create table if not exists cocktail
 (
-  cocktail_id               bigint auto_increment primary key,
+  cocktail_id               bigint auto_increment primary  key,
   cocktail_title            varchar(255) not null,
-  cocktail_announce         LONGTEXT     not null,
+  cocktail_announce         varchar(1000)     not null,
   cocktail_cooking_time     int,
   cocktail_prep_time_minute int,
   cocktail_publication_date datetime     not null,
