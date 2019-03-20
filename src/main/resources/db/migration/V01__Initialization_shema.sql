@@ -1,70 +1,55 @@
-create table cocktail
+create table if not exists user
 (
-  id              bigint auto_increment
+  user_id        bigint auto_increment primary key,
+  user_loginname varchar(255),
+  user_email     varchar(255),
+  user_password  varchar(255)
+);
 
-    primary key,
-  announce        varchar(255) null,
-  cookingTime     int          null,
-  prepTimeMinute  int          null,
-  publicationDate date         null,
-  title           varchar(255) null,
-  author_id       bigint       null
-)
-  engine = MyISAM;
-
-create index FK4qblqyomyx9gpa1tbpr6q2gvw
-  on cocktail (author_id);
-
-create table cocktail_image
+create table if not exists photo
 (
-  Cocktail_id bigint not null,
-  image_id    bigint not null
-)
-  engine = MyISAM;
+  photo_id    bigint auto_increment primary key,
+  photo_path  varchar(255) not null,
+  photo_title varchar(255) not null,
+  photo_alt   varchar(255)
+);
 
-create index FKl8hbq73mvonmmh3pbe73vqufy
-  on cocktail_image (Cocktail_id);
-
-create index FKpvfletane5mhidv5sa24ecicf
-  on cocktail_image (image_id);
-
-create table cocktail_ingredients
+create table if not exists user_info
 (
-  Cocktail_id    bigint not null,
-  ingredients_id bigint not null
-)
-  engine = MyISAM;
+  user_info_id bigint primary key,
+  firstname    varchar(255),
+  lastname     varchar(255),
+  foreign key (user_info_id) references user (user_id)
+);
 
-create index FKkjkp19c3bd2w0ogpq6jkxvmh9
-  on cocktail_ingredients (Cocktail_id);
-
-create index FKtm04d2ya3m712fe7tgsy15rv2
-  on cocktail_ingredients (ingredients_id);
-
-create table ingredient
+create table if not exists ingredient
 (
-  id          bigint auto_increment
+  ingredient_id          bigint auto_increment primary key,
+  ingredient_title       varchar(255) not null,
+  ingredient_description            LONGTEXT,
+  fk_ingredient_photo_id bigint,
+  foreign key (fk_ingredient_photo_id) references photo (photo_id)
+);
 
-    primary key,
-  description varchar(255) null,
-  TITLE       varchar(255) null
-)
-  engine = MyISAM;
-
-create table photo
+create table if not exists cocktail
 (
-  id    bigint auto_increment
+  cocktail_id               bigint auto_increment primary key,
+  cocktail_title            varchar(255) not null,
+  cocktail_announce         LONGTEXT     not null,
+  cocktail_cooking_time     int,
+  cocktail_prep_time_minute int,
+  cocktail_publication_date datetime     not null,
+  fk_user_id                bigint,
+  fk_photo_id               bigint,
+  foreign key (fk_user_id) references user (user_id),
+  foreign key (fk_photo_id) references photo (photo_id)
+);
 
-    primary key,
-  patch varchar(255) null
-)
-  engine = MyISAM;
-
-create table user
+create table if not exists cocktail_ingredients
 (
-  id   bigint auto_increment
-
-    primary key,
-  name varchar(255) null
-)
-  engine = MyISAM;
+  cocktail_ingredients_id bigint auto_increment primary key,
+  fk_ingredient_id        bigint not null,
+  fk_cocktail_id          bigint not null,
+  foreign key (fk_ingredient_id) references ingredient (ingredient_id),
+  foreign key (fk_cocktail_id) references cocktail (cocktail_id)
+);

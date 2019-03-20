@@ -1,22 +1,16 @@
 package de.cocktail.service;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import de.cocktail.model.Cocktail;
-import de.cocktail.model.Ingredient;
-import de.cocktail.model.Photo;
-import de.cocktail.model.User;
 import de.cocktail.repository.CocktailRepository;
 import de.cocktail.web.CocktailWeb;
 import de.cocktail.web.CocktailWebOutput;
 import de.exeption.NotFoundCocktailById;
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 @Component
 public class CocktailServiceImpl<Y, T> implements CocktailService {

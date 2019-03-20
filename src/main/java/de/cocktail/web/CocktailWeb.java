@@ -1,8 +1,7 @@
 package de.cocktail.web;
 
-import lombok.Data;
-
 import java.util.List;
+import lombok.Data;
 
 @Data
 public class CocktailWeb {

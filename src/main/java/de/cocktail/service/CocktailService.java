@@ -3,9 +3,8 @@ package de.cocktail.service;
 import de.cocktail.model.Cocktail;
 import de.cocktail.web.CocktailWeb;
 import de.cocktail.web.CocktailWebOutput;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public interface CocktailService<Y, T> {
