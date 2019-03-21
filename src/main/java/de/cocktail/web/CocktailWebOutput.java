@@ -7,26 +7,24 @@ import lombok.Data;
 @Data
 public class CocktailWebOutput {
 
-    private Long id;
+	private Long id;
 
-    private String title;
+	private String title;
 
-    private String announce;
+	private String announce;
 
-    private Date publicationDate;
+	private Date publicationDate;
 
-    private Userweb author;
+	private Userweb author;
 
-    private List<IngredientWeb >ingredients;
+	private List<IngredientWeb> ingredients;
 
-    private int prepTimeMinute;
+	private int prepTimeMinute;
 
-    private int cookingTime;
+	private int cookingTime;
 
-    private List <PhotoWeb> image;
+	private List<PhotoWeb> image;
 
-    public CocktailWebOutput() {
-    }
-
-
+	public CocktailWebOutput() {
+	}
 }

@@ -5,8 +5,8 @@ import lombok.Data;
 @Data
 public class PhotoWeb {
 
-    private String patch;
+	private String patch;
 
-    public PhotoWeb() {
-    }
+	public PhotoWeb() {
+	}
 }

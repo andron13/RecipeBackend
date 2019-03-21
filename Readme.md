@@ -20,5 +20,6 @@ To development we use:
 ## How to start
 
 1. 
+jdbc:mysql://localhost/db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
 
 

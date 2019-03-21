@@ -29,6 +29,4 @@ public interface CocktailService<Y, T> {
     public CocktailWebOutput findByTitle(String title);
 
     public Y convertTheeCoctailsIntoAnotherEmbodiment(T t, Class <Y> refactoryclass);
-
-
 }

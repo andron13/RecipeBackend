@@ -1,3 +1,4 @@
+drop table if exists user;
 create table if not exists user
 (
   user_id        bigint auto_increment primary key,
@@ -6,6 +7,7 @@ create table if not exists user
   user_password  varchar(255)
 );
 
+drop table if exists photo;
 create table if not exists photo
 (
   photo_id    bigint auto_increment primary key,
@@ -14,6 +16,7 @@ create table if not exists photo
   photo_alt   varchar(255)
 );
 
+drop table if exists user_info;
 create table if not exists user_info
 (
   user_info_id bigint primary key,
@@ -22,6 +25,7 @@ create table if not exists user_info
   foreign key (user_info_id) references user (user_id)
 );
 
+drop table if exists ingredient;
 create table if not exists ingredient
 (
   ingredient_id          bigint auto_increment primary key,
@@ -31,11 +35,13 @@ create table if not exists ingredient
   foreign key (fk_ingredient_photo_id) references photo (photo_id)
 );
 
+drop table if exists cocktail;
 create table if not exists cocktail
 (
   cocktail_id               bigint auto_increment primary key,
   cocktail_title            varchar(255) not null,
-  cocktail_announce         LONGTEXT     not null,
+  # TODO coctail_announce varchar or longtext ?
+  cocktail_announce         varchar(255) not null,
   cocktail_cooking_time     int,
   cocktail_prep_time_minute int,
   cocktail_publication_date datetime     not null,
@@ -45,6 +51,7 @@ create table if not exists cocktail
   foreign key (fk_photo_id) references photo (photo_id)
 );
 
+drop table if exists cocktail_ingredients;
 create table if not exists cocktail_ingredients
 (
   cocktail_ingredients_id bigint auto_increment primary key,

@@ -9,6 +9,4 @@ public class Userweb {
 
     public Userweb() {
     }
-
-
 }
