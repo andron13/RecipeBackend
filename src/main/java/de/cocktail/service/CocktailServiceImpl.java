@@ -14,7 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-public class CocktailServiceImpl<Y, T> implements CocktailService {
+public class CocktailServiceImpl<Y> implements CocktailService {
 
     @Autowired
     private CocktailRepository cocktailRepository;
@@ -37,9 +37,9 @@ public class CocktailServiceImpl<Y, T> implements CocktailService {
         } else return creatCocktailWebOutputToCocktail(optionalRecipe.get());
     }
 
-    public Object convertTheeCoctailsIntoAnotherEmbodiment(Object t, Class refactoryclass) {
+    public Y convertTheeCoctailsIntoAnotherEmbodiment(Object t, Object clas ) {
         ModelMapper modelMapper = new ModelMapper();
-        Y y = (Y) modelMapper.map(t, refactoryclass);
+        Y y = (Y) modelMapper.map(t, clas.getClass());
         return y;
     }
 

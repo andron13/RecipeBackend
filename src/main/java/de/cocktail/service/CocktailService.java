@@ -29,7 +29,7 @@ public interface CocktailService<Y, T> {
 
     List <CocktailWebOutput> findByTitle(String title);
 
-    Y convertTheeCoctailsIntoAnotherEmbodiment(T t, Class <Y> refactoryclass);
+    Y convertTheeCoctailsIntoAnotherEmbodiment(T t, Y clas);
 
 
 }
