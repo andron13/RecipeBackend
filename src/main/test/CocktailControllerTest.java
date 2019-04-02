@@ -1,6 +1,4 @@
 import de.Main;
-import de.cocktail.model.Photo;
-import de.cocktail.repository.CocktailRepository;
 import de.cocktail.service.CocktailService;
 import de.cocktail.web.CocktailWebOutput;
 import de.cocktail.web.IngredientWeb;
@@ -37,30 +35,17 @@ public class CocktailControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    CocktailRepository cocktailRepository;
-
-    @MockBean
     private CocktailService cocktailService;
 
-
-    private Photo photoList = new Photo(1L, "http//google.com", "", "");
-
-    private CocktailWebOutput cocktailWebOutput = new CocktailWebOutput(1l, COCKTAIL_NAME, "So I have to say one of the best drink's I've drunk so far has become my favorite drink as well", null, new UserWeb(COCKTAIL_AUTHOR_NAME), Arrays.asList(new IngredientWeb(INGREDIENT_NAME, "4 cl Wodka")), 1, 1, null);
+    private CocktailWebOutput cocktailWebOutput = new CocktailWebOutput(1L, COCKTAIL_NAME, "So I have to say one of the best drink's I've drunk so far has become my favorite drink as well", null, new UserWeb(COCKTAIL_AUTHOR_NAME), Arrays.asList(new IngredientWeb(INGREDIENT_NAME, "4 cl Wodka")), 1, 1, null);
     private List<CocktailWebOutput> cocktailWebOutputList = Collections.singletonList(cocktailWebOutput);
 
 
     private final static String COCKTAIL_NAME = "Sex on the Beach Cocktail Recipe";
     private final static String COCKTAIL_AUTHOR_NAME = "Iurie Railean";
     private final static String INGREDIENT_NAME = "Wodka";
-
-
-    private final static String COCKTAIL_SEX_ARRAY_JSON = "[{\"id\":1,\"title\":\"Sex on the Beach Cocktail Recipe\",\"announce\":\"So I have to say one of the best drink's I've drunk so far has become my favorite drink as well\",\"publicationDate\":null,\"author\":{\"name\":\"Iurie Railean\"},\"ingredients\":[{\"title\":\"Wodka\",\"description\":\"4 cl Wodka\"},{\"title\":\"Pfirsich Likör\",\"description\":\"4 cl Pfirsich Likör\"},{\"title\":\"cranberry juice or Cranberry Rectal\",\"description\":\"8 cl cranberry juice or Cranberry Rectal\"},{\"title\":\"orange juice\",\"description\":\"8 cl of orange juice\"},{\"title\":\"ice\",\"description\":\"ice cubes\"}],\"prepTimeMinute\":0,\"cookingTime\":1,\"image\":{\"path\":\"http//google.com\",\"title\":\"\",\"alt\":\"\"}}]";
-    private final static String COCKTAIL_SEX_JSON =        "{\"id\":1,\"title\":\"Sex on the Beach Cocktail Recipe\",\"announce\":\"So I have to say one of the best drink's I've drunk so far has become my favorite drink as well\",\"publicationDate\":null,\"author\":{\"name\":\"Iurie Railean\"},\"ingredients\":[{\"title\":\"Wodka\",\"description\":\"4 cl Wodka\"},{\"title\":\"Pfirsich Likör\",\"description\":\"4 cl Pfirsich Likör\"},{\"title\":\"cranberry juice or Cranberry Rectal\",\"description\":\"8 cl cranberry juice or Cranberry Rectal\"},{\"title\":\"orange juice\",\"description\":\"8 cl of orange juice\"},{\"title\":\"ice\",\"description\":\"ice cubes\"}],\"prepTimeMinute\":0,\"cookingTime\":1,\"image\":{\"path\":\"http//google.com\",\"title\":\"\",\"alt\":\"\"}}";
     private final static String COCKTAIL_WEB_ARRAY_JSON = "[{\"id\":1,\"title\":\"Sex on the Beach Cocktail Recipe\",\"announce\":\"So I have to say one of the best drink's I've drunk so far has become my favorite drink as well\",\"publicationDate\":null,\"author\":{\"name\":\"Iurie Railean\"},\"ingredients\":[{\"title\":\"Wodka\",\"description\":\"4 cl Wodka\"}],\"prepTimeMinute\":1,\"cookingTime\":1,\"image\":null}]";
     private final static String COCKTAIL_WEB_JSON = "{\"id\":1,\"title\":\"Sex on the Beach Cocktail Recipe\",\"announce\":\"So I have to say one of the best drink's I've drunk so far has become my favorite drink as well\",\"publicationDate\":null,\"author\":{\"name\":\"Iurie Railean\"},\"ingredients\":[{\"title\":\"Wodka\",\"description\":\"4 cl Wodka\"}],\"prepTimeMinute\":1,\"cookingTime\":1,\"image\":null}";
-
-
-
 
     @Test
     public void findCocktailsByIngredientsTitleTest() throws Exception {
