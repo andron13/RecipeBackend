@@ -1,4 +1,5 @@
 package de.cocktail.service;
+
 import de.cocktail.model.Cocktail;
 import de.cocktail.repository.CocktailRepository;
 import de.exeption.FileStorageException;
@@ -11,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -20,7 +19,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
