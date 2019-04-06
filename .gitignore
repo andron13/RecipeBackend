@@ -23,6 +23,7 @@ thumbs.db
 .DS_Store
 
 target/
+resources/image
 
 ###  Config Files andron13
 *.cnf
