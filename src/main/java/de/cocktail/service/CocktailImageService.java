@@ -3,6 +3,7 @@ package de.cocktail.service;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Path;
 
 public interface CocktailImageService {
@@ -15,4 +16,6 @@ public interface CocktailImageService {
     Path createDirectory(Long id, Path path);
 
     String composeFileDownloadUri(Long id, MultipartFile file);
+
+    String controlContentTypeToDownload(Resource resource, HttpServletRequest request);
 }

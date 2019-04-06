@@ -8,10 +8,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 
 @RestController
 public class CocktailImageController {
@@ -31,26 +29,13 @@ public class CocktailImageController {
 
     @GetMapping( "/downloadImage/{id}/{fileName:.+}" )
     public ResponseEntity <Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request,@PathVariable Long id) {
-
         Resource resource = cocktailImageService.loadFileAsResource(fileName,id);
-
-        String contentType = null;
-        try {
-            contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (contentType == null) {
-            contentType = "application/octet-stream";
-        }
-
         return ResponseEntity.
                 ok()
-                .contentType(MediaType.parseMediaType(contentType))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""
+                .contentType(MediaType.parseMediaType
+                        (cocktailImageService.controlContentTypeToDownload(resource,request)))
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment:filename=\""
                         + resource.getFilename() + "\"")
                 .body(resource);
     }
-
 }

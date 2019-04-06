@@ -13,6 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -110,5 +111,17 @@ public class CocktailImageServiceImpl implements CocktailImageService{
             } catch (IOException ex) {
                 throw new FileStorageException("Could not store file " + fileName + ". Please try again!");
             }
+            }
+            public String controlContentTypeToDownload(Resource resource, HttpServletRequest request) {
+                String contentType = null;
+                try {
+                    contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (contentType == null) {
+                    contentType = "application/octet-stream";
+                }
+                return contentType;
             }
         }
