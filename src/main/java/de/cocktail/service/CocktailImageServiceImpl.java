@@ -32,13 +32,12 @@ public class CocktailImageServiceImpl implements CocktailImageService{
     @Autowired
     CocktailRepository cocktailRepository;
 
-        private final Path fileStorageLocation=
+        private final Path fileStorageLocation=Paths
+                 .get("src\\main\\resources\\image")
+                    .toAbsolutePath()
+                 .normalize();
 
-         Paths.get("src\\main\\resources\\image")
-                    .toAbsolutePath().normalize();
-
-
-        public String storeFile(MultipartFile file,Long id) {
+        private String storeFile(MultipartFile file, Long id) {
             String fileName = StringUtils.cleanPath("cocktails"+id.toString()+ splitExtensionFile(file));
                 if(fileName.contains("..")) {
                     throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);                }
@@ -58,7 +57,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
                 throw new MyFileNotFoundException("File not found " + fileName);
             }
         }
-        public void setImageToCocktail(Long id,String uri,String fileName) {
+        private void setImageToCocktail(Long id, String uri, String fileName) {
             Optional <Cocktail> byId = cocktailRepository.findById(id);
             if (byId.isPresent()) {
                 Cocktail cocktail = byId.get();
@@ -69,8 +68,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
             else throw new NotFoundCocktail("This cocktail does not exist");
 
         }
-        public Path createDirectory(Long id, Path path) {
-
+        private Path createDirectory(Long id, Path path) {
             File uploadRootDir = new File(String.valueOf(path)+"/"+id.toString());
             if (!uploadRootDir.exists()) {
                 uploadRootDir.mkdirs();
@@ -104,7 +102,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
             savedImageToServer(id,fileName,file);
         return fileDownloadUri;
         }
-        public void savedImageToServer(Long id, String fileName, MultipartFile file) {
+        private void savedImageToServer(Long id, String fileName, MultipartFile file) {
             Path targetLocation = createDirectory(id,fileStorageLocation).resolve(fileName);
             try {
                 Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
