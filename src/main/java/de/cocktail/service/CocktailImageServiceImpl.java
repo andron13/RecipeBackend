@@ -31,17 +31,19 @@ public class CocktailImageServiceImpl implements CocktailImageService{
 
         private final Path fileStorageLocation=
 
-         Paths.get("C:\\Users\\black82\\Documents\\GitHub\\Recipe Doker\\RecipeBackend\\src\\main\\resources\\image")
+         Paths.get("src\\main\\resources\\image")
                     .toAbsolutePath().normalize();
-        public String storeFile(MultipartFile file) {
-            String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
+
+        public String storeFile(MultipartFile file,Long id) {
+            String fileName = StringUtils.cleanPath("Cocktails"+id.toString()+".jpg");
 
             try {
                 if(fileName.contains("..")) {
                     throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
                 }
 
-                Path targetLocation = this.fileStorageLocation.resolve(fileName);
+                Path targetLocation = createDirectory(id,fileStorageLocation).resolve(fileName);
                 Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
                 return fileName;
@@ -50,9 +52,9 @@ public class CocktailImageServiceImpl implements CocktailImageService{
             }
         }
 
-        public Resource loadFileAsResource(String fileName) {
+        public Resource loadFileAsResource(String fileName,Long id) {
             try {
-                Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+                Path filePath = createDirectory(id,fileStorageLocation).resolve(fileName).normalize();
                 Resource resource = new UrlResource(filePath.toUri());
                 if(resource.exists()) {
                     return resource;
@@ -72,6 +74,15 @@ public class CocktailImageServiceImpl implements CocktailImageService{
                 cocktailRepository.save(cocktail);
             }
             else throw new NotFoundCocktail("This cocktail does not exist");
+
+        }
+        public Path createDirectory(Long id, Path path) {
+
+            File uploadRootDir = new File(String.valueOf(path)+"/"+id.toString());
+            if (!uploadRootDir.exists()) {
+                uploadRootDir.mkdirs();
+            }
+            return uploadRootDir.toPath();
 
         }
 

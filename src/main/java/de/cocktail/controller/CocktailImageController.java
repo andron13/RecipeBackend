@@ -1,7 +1,6 @@
 package de.cocktail.controller;
 
 import de.cocktail.service.CocktailImageService;
-import javafx.scene.image.Image;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -11,9 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
 
 @RestController
@@ -29,10 +26,12 @@ public class CocktailImageController {
     @PostMapping( "/uploadCocktailImage/{id}" )
     public String uploadFile(@PathVariable Long id, @RequestParam ("file")MultipartFile file) {
 
-        String fileName = cocktailImageService.storeFile(file);
+        String fileName = cocktailImageService.storeFile(file,id);
         String fileDownloadUri = ServletUriComponentsBuilder.
                 fromCurrentContextPath()
                 .path("/downloadImage/")
+                .path(id.toString())
+                .path("/")
                 .path(fileName)
                 .toUriString();
         cocktailImageService.setImageToCocktail(id,fileDownloadUri,fileName);
@@ -40,20 +39,22 @@ public class CocktailImageController {
     }
     @PostMapping( "/uploadImage/{id}" )
     public String uploadFile1(@PathVariable Long id, @RequestParam ("file")MultipartFile file) {
-        String fileName = cocktailImageService.storeFile(file);
+        String fileName = cocktailImageService.storeFile(file,id);
 
         return ServletUriComponentsBuilder.
                 fromCurrentContextPath()
                 .path("/downloadFile/")
+                .path(id.toString())
+                .path("/")
                 .path(fileName)
                 .toUriString();
     }
 
 
-    @GetMapping( "/downloadImage/{fileName:.+}" )
-    public ResponseEntity <Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
+    @GetMapping( "/downloadImage/{id}/{fileName:.+}" )
+    public ResponseEntity <Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request,@PathVariable Long id) {
 
-        Resource resource = cocktailImageService.loadFileAsResource(fileName);
+        Resource resource = cocktailImageService.loadFileAsResource(fileName,id);
 
         String contentType = null;
         try {
