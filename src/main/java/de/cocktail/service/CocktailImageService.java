@@ -13,4 +13,6 @@ public interface CocktailImageService {
     void setImageToCocktail(Long id, String uri, String fileName);
 
     Path createDirectory(Long id, Path path);
+
+    String composeFileDownloadUri(Long id, MultipartFile file);
 }

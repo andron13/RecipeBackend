@@ -11,6 +11,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +20,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -34,20 +38,10 @@ public class CocktailImageServiceImpl implements CocktailImageService{
 
 
         public String storeFile(MultipartFile file,Long id) {
-            String fileName = StringUtils.cleanPath("Cocktails"+id.toString()+".jpg");
-
-            try {
+            String fileName = StringUtils.cleanPath("cocktails"+id.toString()+splitTypeFile(file));
                 if(fileName.contains("..")) {
-                    throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
-                }
-
-                Path targetLocation = createDirectory(id,fileStorageLocation).resolve(fileName);
-                Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-
+                    throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);                }
                 return fileName;
-            } catch (IOException ex) {
-                throw new FileStorageException("Could not store file " + fileName + ". Please try again!");
-            }
         }
 
         public Resource loadFileAsResource(String fileName,Long id) {
@@ -83,5 +77,38 @@ public class CocktailImageServiceImpl implements CocktailImageService{
             return uploadRootDir.toPath();
 
         }
+        private String splitTypeFile(MultipartFile file) {
+            String split = file.getOriginalFilename();
+            split=split.substring(Objects.requireNonNull(split).lastIndexOf('.'));
+            if (validatorExtensionImage(split))return split;
+            else throw new FileStorageException("Sorry! Your image is not of acceptable format. " +
+                    "Please try a .jpg or .png image again"+file.getOriginalFilename());
 
-    }
+        }
+        private boolean validatorExtensionImage(String string) {
+            List<String>list=Arrays.asList(".jpg",".png");
+            return list.contains(string);
+        }
+        public String composeFileDownloadUri(Long id,MultipartFile file) {
+            String fileName = storeFile(file, id);
+            String fileDownloadUri = ServletUriComponentsBuilder.
+                    fromCurrentContextPath()
+                    .path("/downloadImage/")
+                    .path(id.toString())
+                    .path("/")
+                    .path(fileName)
+                    .toUriString();
+
+            setImageToCocktail(id,fileDownloadUri,fileName);
+            savedImageToServer(id,fileName,file);
+        return fileDownloadUri;
+        }
+        public void savedImageToServer(Long id, String fileName, MultipartFile file) {
+            Path targetLocation = createDirectory(id,fileStorageLocation).resolve(fileName);
+            try {
+                Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException ex) {
+                throw new FileStorageException("Could not store file " + fileName + ". Please try again!");
+            }
+            }
+        }

@@ -25,29 +25,7 @@ public class CocktailImageController {
 
     @PostMapping( "/uploadCocktailImage/{id}" )
     public String uploadFile(@PathVariable Long id, @RequestParam ("file")MultipartFile file) {
-
-        String fileName = cocktailImageService.storeFile(file,id);
-        String fileDownloadUri = ServletUriComponentsBuilder.
-                fromCurrentContextPath()
-                .path("/downloadImage/")
-                .path(id.toString())
-                .path("/")
-                .path(fileName)
-                .toUriString();
-        cocktailImageService.setImageToCocktail(id,fileDownloadUri,fileName);
-        return fileDownloadUri;
-    }
-    @PostMapping( "/uploadImage/{id}" )
-    public String uploadFile1(@PathVariable Long id, @RequestParam ("file")MultipartFile file) {
-        String fileName = cocktailImageService.storeFile(file,id);
-
-        return ServletUriComponentsBuilder.
-                fromCurrentContextPath()
-                .path("/downloadFile/")
-                .path(id.toString())
-                .path("/")
-                .path(fileName)
-                .toUriString();
+        return cocktailImageService.composeFileDownloadUri(id,file);
     }
 
 
