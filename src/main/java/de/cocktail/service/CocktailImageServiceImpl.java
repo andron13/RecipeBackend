@@ -39,7 +39,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
 
 
         public String storeFile(MultipartFile file,Long id) {
-            String fileName = StringUtils.cleanPath("cocktails"+id.toString()+splitTypeFile(file));
+            String fileName = StringUtils.cleanPath("cocktails"+id.toString()+ splitExtensionFile(file));
                 if(fileName.contains("..")) {
                     throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);                }
                 return fileName;
@@ -78,7 +78,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
             return uploadRootDir.toPath();
 
         }
-        private String splitTypeFile(MultipartFile file) {
+        private String splitExtensionFile(MultipartFile file) {
             String split = file.getOriginalFilename();
             split=split.substring(Objects.requireNonNull(split).lastIndexOf('.'));
             if (validatorExtensionImage(split))return split;
