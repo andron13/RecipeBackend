@@ -43,7 +43,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
         this.cocktailRepository = cocktailRepository;
     }
     public String composeFileDownloadUriAndSavetImage(Long id, MultipartFile file) {
-        String fileName = storeFile(file, id);
+        String fileName = composesTheNameofTheImage(file, id);
         String fileDownloadUri = ServletUriComponentsBuilder.
                 fromCurrentContextPath()
                 .path("/downloadImage/")
@@ -58,7 +58,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
         setImageToCocktail(id,fileDownloadUri,fileName, getByHeightAndWidthToImage(image_path));
         return fileDownloadUri;
     }
-    private String storeFile(MultipartFile file, Long id) {
+    private String composesTheNameofTheImage(MultipartFile file, Long id) {
             String fileName = StringUtils.cleanPath("cocktails"+id.toString()+ splitExtensionFile(file));
                 if(fileName.contains("..")) {
                     throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);                }
