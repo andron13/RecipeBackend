@@ -13,7 +13,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -57,12 +59,13 @@ public class CocktailImageServiceImpl implements CocktailImageService{
                 throw new MyFileNotFoundException("File not found " + fileName);
             }
         }
-        private void setImageToCocktail(Long id, String uri, String fileName) {
+        private void setImageToCocktail(Long id, String uri, String fileName,String alt) {
             Optional <Cocktail> byId = cocktailRepository.findById(id);
             if (byId.isPresent()) {
                 Cocktail cocktail = byId.get();
                 cocktail.getImage().setPatch(uri);
                 cocktail.getImage().setTitle(fileName);
+                cocktail.getImage().setAlt(alt);
                 cocktailRepository.save(cocktail);
             }
             else throw new NotFoundCocktail("This cocktail does not exist");
@@ -81,7 +84,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
             split=split.substring(Objects.requireNonNull(split).lastIndexOf('.'));
             if (validatorExtensionImage(split))return split;
             else throw new FileStorageException("Sorry! Your image is not of acceptable format. " +
-                    "Please try a .jpg or .png image again"+file.getOriginalFilename());
+                    "Please try a .jpg or .png image again"+"  "+file.getOriginalFilename());
 
         }
         private boolean validatorExtensionImage(String string) {
@@ -97,9 +100,10 @@ public class CocktailImageServiceImpl implements CocktailImageService{
                     .path("/")
                     .path(fileName)
                     .toUriString();
-
-            setImageToCocktail(id,fileDownloadUri,fileName);
-            savedImageToServer(id,fileName,file);
+              String image_path=fileStorageLocation.toString()+"/"+id+"/"+fileName;
+                          savedImageToServer(id,fileName,file);
+            controlsWhetherTheFailYouReceiveIsImage(image_path);
+            setImageToCocktail(id,fileDownloadUri,fileName,getByAltToImage(image_path));
         return fileDownloadUri;
         }
         private void savedImageToServer(Long id, String fileName, MultipartFile file) {
@@ -122,4 +126,36 @@ public class CocktailImageServiceImpl implements CocktailImageService{
                 }
                 return contentType;
             }
+   private void controlsWhetherTheFailYouReceiveIsImage(String image_path){
+       BufferedImage miniImage = null;
+       try {
+           miniImage = ImageIO.read(new File(image_path));
+       } catch (IOException e) {
+           e.printStackTrace();
+       }
+
+       if (miniImage == null) {
+            File file= new File(image_path);
+            Path fp = file.toPath();
+            try {
+                Files.delete(fp);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            throw  new FileStorageException("Sorry! Your image is not of acceptable format. ");
+
+        }
+
+    }
+
+    private String getByAltToImage(String image_path){
+        BufferedImage bimg = null;
+        try {
+            bimg = ImageIO.read(new File(image_path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+      return Objects.requireNonNull(bimg).getHeight()+" x "+bimg.getWidth();
+    }
+
         }
