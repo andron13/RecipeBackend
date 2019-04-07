@@ -67,7 +67,8 @@ public class CocktailImageServiceImpl implements CocktailImageService{
 
         public Resource loadFileAsResource(String fileName,Long id) {
             try {
-                Path filePath = createDirectory(id,fileStorageLocation).resolve(fileName).normalize();
+                Path path = Paths.get(fileStorageLocation+"/"+id);
+                Path filePath = path.resolve(fileName).normalize();
                 Resource resource = new UrlResource(filePath.toUri());
                 if(resource.exists()) {
                     return resource;
