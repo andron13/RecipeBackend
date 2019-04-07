@@ -14,26 +14,26 @@ import javax.servlet.http.HttpServletRequest;
 @RestController
 public class CocktailImageController {
 
-    private final CocktailImageService cocktailImageService;
+    private final CocktailImageService COCKTAIL_IMAGE_SERVICE;
 
     @Autowired
-    public CocktailImageController(CocktailImageService cocktailImageService) {
-        this.cocktailImageService = cocktailImageService;
+    public CocktailImageController(CocktailImageService COCKTAIL_IMAGE_SERVICE) {
+        this.COCKTAIL_IMAGE_SERVICE = COCKTAIL_IMAGE_SERVICE;
     }
 
     @PostMapping( "/uploadCocktailImage/{id}" )
     public String uploadFile(@PathVariable Long id, @RequestParam ("file")MultipartFile file) {
-        return cocktailImageService.composeFileDownloadUriAndSavetImage(id,file);
+        return COCKTAIL_IMAGE_SERVICE.composeFileDownloadUriAndSavetImage(id,file);
     }
 
 
     @GetMapping( "/downloadImage/{id}/{fileName:.+}" )
     public ResponseEntity <Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request,@PathVariable Long id) {
-        Resource resource = cocktailImageService.loadFileAsResource(fileName,id);
+        Resource resource = COCKTAIL_IMAGE_SERVICE.loadFileAsResource(fileName,id);
         return ResponseEntity.
                 ok()
                 .contentType(MediaType.parseMediaType
-                        (cocktailImageService.controlContentTypeToDownload(resource,request)))
+                        (COCKTAIL_IMAGE_SERVICE.controlContentTypeToDownload(resource,request)))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment:filename=\""
                         + resource.getFilename() + "\"")
                 .body(resource);

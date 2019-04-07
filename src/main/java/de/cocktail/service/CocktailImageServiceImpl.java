@@ -33,7 +33,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
 
     private final CocktailRepository cocktailRepository;
 
-        private final Path fileStorageLocation=Paths
+        private final Path FILE_STORAGE_LOCATION =Paths
                  .get("src\\main\\resources\\image")
                     .toAbsolutePath()
                  .normalize();
@@ -51,7 +51,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
                 .path("/")
                 .path(fileName)
                 .toUriString();
-        String image_path=fileStorageLocation.toString()+"/"+id+"/"+fileName;
+        String image_path= FILE_STORAGE_LOCATION.toString()+"/"+id+"/"+fileName;
 
         savedImageToServer(id,fileName,file);
         controlsWhetherTheFailYouReceiveIsImage(image_path);
@@ -67,7 +67,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
 
         public Resource loadFileAsResource(String fileName,Long id) {
             try {
-                Path filePath = Paths.get(fileStorageLocation.toString())
+                Path filePath = Paths.get(FILE_STORAGE_LOCATION.toString())
                         .resolve(id.toString())
                         .resolve(fileName);
                 Resource resource = new UrlResource(filePath.toUri());
@@ -105,7 +105,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
             split=split.substring(Objects.requireNonNull(split).lastIndexOf('.'));
             if (validatorExtensionImage(split))return split;
             else throw new FileStorageException("Sorry! Your image is not of acceptable format. " +
-                    "Please try a .jpg or .png image again"+" model- xxxxx.jpg&xxxx.jpeg&xxxxx.png "
+                    "Please try a .jpg or .png image again"+" model- xxxxx.jpg & xxxx.jpeg & xxxxx.png "
                     +file.getOriginalFilename());
 
         }
@@ -115,7 +115,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
         }
 
         private void savedImageToServer(Long id, String fileName, MultipartFile file) {
-            Path targetLocation = createDirectory(id,fileStorageLocation).resolve(fileName);
+            Path targetLocation = createDirectory(id, FILE_STORAGE_LOCATION).resolve(fileName);
             try {
                 Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException ex) {
