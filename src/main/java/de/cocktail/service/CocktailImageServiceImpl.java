@@ -95,7 +95,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
         private Path createDirectory(Long id, Path path) {
             File uploadRootDir = new File(String.valueOf(path)+"/"+id.toString());
             boolean isDirectoryCreated= uploadRootDir.exists();
-            if (isDirectoryCreated) {
+            if (!isDirectoryCreated && uploadRootDir.mkdirs()) {
                 return uploadRootDir.toPath();
             }
             else return uploadRootDir.toPath();
