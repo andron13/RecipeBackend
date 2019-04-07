@@ -23,7 +23,7 @@ public class CocktailImageController {
 
     @PostMapping( "/uploadCocktailImage/{id}" )
     public String uploadFile(@PathVariable Long id, @RequestParam ("file")MultipartFile file) {
-        return cocktailImageService.composeFileDownloadUri(id,file);
+        return cocktailImageService.composeFileDownloadUriAndSavetImage(id,file);
     }
 
 
