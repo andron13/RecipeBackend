@@ -62,7 +62,8 @@ public class CocktailImageServiceImpl implements CocktailImageService{
             String fileName = StringUtils.cleanPath("cocktails"+id.toString()+ splitExtensionFile(file));
                 if(fileName.contains("..")) {
                     throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);                }
-                return fileName;
+               if (COCKTAIL_REPOSITORY.findById(id).isPresent())return fileName;
+               else throw new NotFoundCocktail("This cocktail does not exist");
         }
 
         public Resource loadFileAsResource(String fileName,Long id) {
@@ -89,8 +90,6 @@ public class CocktailImageServiceImpl implements CocktailImageService{
                 cocktail.getImage().setAlt(alt);
                 COCKTAIL_REPOSITORY.save(cocktail);
             }
-            else throw new NotFoundCocktail("This cocktail does not exist");
-
         }
         private Path createDirectory(Long id, Path path) {
             File uploadRootDir = new File(String.valueOf(path)+"/"+id.toString());
@@ -105,7 +104,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
             split=split.substring(Objects.requireNonNull(split).lastIndexOf('.'));
             if (validatorExtensionImage(split))return split;
             else throw new FileStorageException("Sorry! Your image is not of acceptable format. " +
-                    "Please try a .jpg or .png image again"+" model- xxxxx.jpg & xxxx.jpeg & xxxxx.png "
+                    "Please try a .jpg , .jpeg or .png image again"+" model- xxxxx.jpg & xxxx.jpeg & xxxxx.png "
                     +file.getOriginalFilename());
 
         }
