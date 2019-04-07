@@ -9,7 +9,7 @@ public interface CocktailImageService {
 
     String controlContentTypeToDownload(Resource resource, HttpServletRequest request);
 
-    String composeFileDownloadUri(Long id, MultipartFile file);
+    String composeFileDownloadUriAndSavetImage(Long id, MultipartFile file);
 
     Resource loadFileAsResource(String fileName, Long id);
 
