@@ -31,7 +31,7 @@ import java.util.Optional;
 @Service
 public class CocktailImageServiceImpl implements CocktailImageService{
 
-    private final CocktailRepository cocktailRepository;
+    private final CocktailRepository COKTAIL_REPOSITORY;
 
         private final Path FILE_STORAGE_LOCATION =Paths
                  .get("src\\main\\resources\\image")
@@ -39,8 +39,8 @@ public class CocktailImageServiceImpl implements CocktailImageService{
                  .normalize();
 
     @Autowired
-    public CocktailImageServiceImpl(CocktailRepository cocktailRepository) {
-        this.cocktailRepository = cocktailRepository;
+    public CocktailImageServiceImpl(CocktailRepository COKTAIL_REPOSITORY) {
+        this.COKTAIL_REPOSITORY = COKTAIL_REPOSITORY;
     }
     public String composeFileDownloadUriAndSavetImage(Long id, MultipartFile file) {
         String fileName = composesTheNameofTheImage(file, id);
@@ -81,13 +81,13 @@ public class CocktailImageServiceImpl implements CocktailImageService{
             }
         }
         private void setImageToCocktail(Long id, String uri, String fileName,String alt) {
-            Optional <Cocktail> byId = cocktailRepository.findById(id);
+            Optional <Cocktail> byId = COKTAIL_REPOSITORY.findById(id);
             if (byId.isPresent()) {
                 Cocktail cocktail = byId.get();
                 cocktail.getImage().setPatch(uri);
                 cocktail.getImage().setTitle(fileName);
                 cocktail.getImage().setAlt(alt);
-                cocktailRepository.save(cocktail);
+                COKTAIL_REPOSITORY.save(cocktail);
             }
             else throw new NotFoundCocktail("This cocktail does not exist");
 
