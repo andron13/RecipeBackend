@@ -91,7 +91,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
             List<String>list=Arrays.asList(".jpg",".png");
             return list.contains(string);
         }
-        public String composeFileDownloadUri(Long id,MultipartFile file) {
+        public String composeFileDownloadUriAndSavetImage(Long id, MultipartFile file) {
             String fileName = storeFile(file, id);
             String fileDownloadUri = ServletUriComponentsBuilder.
                     fromCurrentContextPath()
@@ -101,9 +101,10 @@ public class CocktailImageServiceImpl implements CocktailImageService{
                     .path(fileName)
                     .toUriString();
               String image_path=fileStorageLocation.toString()+"/"+id+"/"+fileName;
-                          savedImageToServer(id,fileName,file);
-            controlsWhetherTheFailYouReceiveIsImage(image_path);
-            setImageToCocktail(id,fileDownloadUri,fileName, getByHeightAndWidthToImage(image_path));
+
+              savedImageToServer(id,fileName,file);
+              controlsWhetherTheFailYouReceiveIsImage(image_path);
+              setImageToCocktail(id,fileDownloadUri,fileName, getByHeightAndWidthToImage(image_path));
         return fileDownloadUri;
         }
         private void savedImageToServer(Long id, String fileName, MultipartFile file) {
