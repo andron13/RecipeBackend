@@ -94,22 +94,23 @@ public class CocktailImageServiceImpl implements CocktailImageService{
         }
         private Path createDirectory(Long id, Path path) {
             File uploadRootDir = new File(String.valueOf(path)+"/"+id.toString());
-            if (!uploadRootDir.exists()) {
-                uploadRootDir.mkdirs();
+            boolean isDirectoryCreated= uploadRootDir.exists();
+            if (isDirectoryCreated) {
+                return uploadRootDir.toPath();
             }
-            return uploadRootDir.toPath();
-
+            else return uploadRootDir.toPath();
         }
         private String splitExtensionFile(MultipartFile file) {
             String split = file.getOriginalFilename();
             split=split.substring(Objects.requireNonNull(split).lastIndexOf('.'));
             if (validatorExtensionImage(split))return split;
             else throw new FileStorageException("Sorry! Your image is not of acceptable format. " +
-                    "Please try a .jpg or .png image again"+"  "+file.getOriginalFilename());
+                    "Please try a .jpg or .png image again"+" model- xxxxx.jpg&xxxx.jpeg&xxxxx.png "
+                    +file.getOriginalFilename());
 
         }
         private boolean validatorExtensionImage(String string) {
-            List<String>list=Arrays.asList(".jpg",".png");
+            List<String>list=Arrays.asList(".jpg",".png",".jpeg");
             return list.contains(string);
         }
 
