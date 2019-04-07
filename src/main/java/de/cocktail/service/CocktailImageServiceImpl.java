@@ -103,7 +103,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
               String image_path=fileStorageLocation.toString()+"/"+id+"/"+fileName;
                           savedImageToServer(id,fileName,file);
             controlsWhetherTheFailYouReceiveIsImage(image_path);
-            setImageToCocktail(id,fileDownloadUri,fileName,getByAltToImage(image_path));
+            setImageToCocktail(id,fileDownloadUri,fileName, getByHeightAndWidthToImage(image_path));
         return fileDownloadUri;
         }
         private void savedImageToServer(Long id, String fileName, MultipartFile file) {
@@ -148,7 +148,7 @@ public class CocktailImageServiceImpl implements CocktailImageService{
 
     }
 
-    private String getByAltToImage(String image_path){
+    private String getByHeightAndWidthToImage(String image_path){
         BufferedImage bimg = null;
         try {
             bimg = ImageIO.read(new File(image_path));
