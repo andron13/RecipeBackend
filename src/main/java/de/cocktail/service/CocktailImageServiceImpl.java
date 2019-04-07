@@ -31,15 +31,19 @@ import java.util.Optional;
 @Service
 public class CocktailImageServiceImpl implements CocktailImageService{
 
-    @Autowired
-    CocktailRepository cocktailRepository;
+    private final CocktailRepository cocktailRepository;
 
         private final Path fileStorageLocation=Paths
                  .get("src\\main\\resources\\image")
                     .toAbsolutePath()
                  .normalize();
 
-        private String storeFile(MultipartFile file, Long id) {
+    @Autowired
+    public CocktailImageServiceImpl(CocktailRepository cocktailRepository) {
+        this.cocktailRepository = cocktailRepository;
+    }
+
+    private String storeFile(MultipartFile file, Long id) {
             String fileName = StringUtils.cleanPath("cocktails"+id.toString()+ splitExtensionFile(file));
                 if(fileName.contains("..")) {
                     throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);                }
