@@ -1,5 +1,6 @@
 package de.cocktail.service;
 
+import ch.qos.logback.core.spi.LogbackLock;
 import de.cocktail.model.Cocktail;
 import de.cocktail.repository.CocktailRepository;
 import de.exeption.CocktailImageFileNotFoundException;
@@ -148,6 +149,7 @@ public class ImageServiceImpl implements ImageService {
             try {
                 Files.delete(fp);
             } catch (IOException e) {
+
                 e.printStackTrace();
             }
             throw  new FileStorageException("Sorry! Your image is not of acceptable format. ");
