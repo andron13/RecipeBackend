@@ -34,8 +34,7 @@ import java.util.*;
 public class ImageServiceImpl implements ImageService {
 
     private final CocktailRepository cocktailRepository;
-//   private static final Logger logger = LogManager.getLogger(ImageServiceImpl.class);
-//
+
         private final Path FILE_STORAGE_LOCATION =Paths
                  .get("src"+File.separator+"main"+File.separator+"resources"+File.separator+"image")
                     .toAbsolutePath()
