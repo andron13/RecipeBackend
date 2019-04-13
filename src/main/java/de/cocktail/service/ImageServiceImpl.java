@@ -6,6 +6,8 @@ import de.exeption.CocktailImageFileNotFoundException;
 import de.exeption.FileStorageException;
 import de.exeption.NotFoundCocktail;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -32,7 +34,8 @@ import java.util.*;
 public class ImageServiceImpl implements ImageService {
 
     private final CocktailRepository cocktailRepository;
-
+//   private static final Logger logger = LogManager.getLogger(ImageServiceImpl.class);
+//
         private final Path FILE_STORAGE_LOCATION =Paths
                  .get("src"+File.separator+"main"+File.separator+"resources"+File.separator+"image")
                     .toAbsolutePath()
