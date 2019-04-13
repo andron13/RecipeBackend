@@ -6,8 +6,6 @@ import de.exeption.CocktailImageFileNotFoundException;
 import de.exeption.FileStorageException;
 import de.exeption.NotFoundCocktail;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -141,7 +139,7 @@ public class ImageServiceImpl implements ImageService {
        try {
            miniImage = ImageIO.read(new File(image_path));
        } catch (IOException e) {
-           e.printStackTrace();
+           e.getStackTrace();
        }
 
        if (miniImage == null) {
@@ -163,7 +161,7 @@ public class ImageServiceImpl implements ImageService {
         try {
             bimg = ImageIO.read(new File(image_path));
         } catch (IOException e) {
-            e.printStackTrace();
+            e.getStackTrace();
         }
       return Objects.requireNonNull(bimg).getHeight()+" x "+bimg.getWidth();
     }
@@ -183,7 +181,7 @@ public class ImageServiceImpl implements ImageService {
             imageStr= Base64.encodeBase64String(imageBytes);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            e.getCause();
         }
         return imageStr;
     }
