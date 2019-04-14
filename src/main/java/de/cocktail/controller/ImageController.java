@@ -5,6 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
+
 @RestController
 public class ImageController {
 
@@ -15,14 +20,14 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-    @PostMapping("/images/{id}")
-    public String saveImage(@PathVariable Long id, @RequestBody String image) {
-        return imageService.composeFileDownloadUriAndSavetImage(id, image);
+   @PostMapping(value = "/images")
+    public String saveImage( @RequestBody String image, @RequestParam("cocktail_id") String id) {
+        return imageService.composeFileDownloadUriAndSavetImage(Long.valueOf(id), image);
     }
 
 
-    @GetMapping("/images/{id}/{fileName}")
-    public ResponseEntity<String> sendImage(@PathVariable String fileName, @PathVariable Long id) {
+    @GetMapping(value = "/images")
+    public ResponseEntity<String> sendImage(@RequestParam("fileName") String fileName, @RequestParam ("id") Long id) {
         String imageBase64 = imageService.loadFileAsResource(fileName, id);
             return ResponseEntity.
                     ok()
