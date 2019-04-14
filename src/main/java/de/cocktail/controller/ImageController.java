@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping(value = "/images")
 public class ImageController {
 
     private final ImageService imageService;
@@ -15,14 +16,14 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-   @PostMapping(value = "/images")
+   @PostMapping
     public String saveImage( @RequestBody String image,
                              @RequestParam("cocktail_id") Long id) {
         return imageService.composeFileDownloadUriAndSavetImage(id, image);
     }
 
 
-    @GetMapping(value = "/images")
+    @GetMapping
     public ResponseEntity<String> sendImage(@RequestParam("fileName") String fileName,
                                             @RequestParam ("id") Long id) {
         String imageBase64 = imageService.loadFileAsResource(fileName, id);
