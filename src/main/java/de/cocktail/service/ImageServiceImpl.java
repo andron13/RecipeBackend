@@ -44,7 +44,7 @@ public class ImageServiceImpl implements ImageService {
     }
 
     public String composeFileDownloadUriAndSavetImage(Long id, String string) {
-        MultipartFile file = Base64InputStream(string);
+        MultipartFile file = convertBase64ToFile(string);
         String fileName = generateImageName(file, id);
         String fileDownloadUri = ServletUriComponentsBuilder.
                 fromCurrentContextPath()
@@ -165,7 +165,7 @@ public class ImageServiceImpl implements ImageService {
         }
       return Objects.requireNonNull(bimg).getHeight()+" x "+bimg.getWidth();
     }
-    private MultipartFile Base64InputStream(String base64String) {
+    private MultipartFile convertBase64ToFile(String base64String) {
         byte[] imageByteArray = Base64.decodeBase64(base64String);
        return new MockMultipartFile("image","image.jpg","image/jpg",imageByteArray) ;
     }
