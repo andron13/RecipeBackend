@@ -49,10 +49,9 @@ public class ImageServiceImpl implements ImageService {
         String fileName = generateImageName(file, id);
         String fileDownloadUri = ServletUriComponentsBuilder.
                 fromCurrentContextPath()
-                .path("/images?"+"id=")
-                .path(id.toString())
-                .path("&&fileName=")
-                .path(fileName).encode()
+                .path("images")
+                .replaceQueryParam("id",id)
+                .replaceQueryParam("fileName",fileName)
                 .toUriString();
         String image_path= FILE_STORAGE_LOCATION.toString()+File.separator+id+File.separator+fileName;
         savedImageToServer(id,fileName,file);
