@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.ws.rs.QueryParam;
 
 @RestController
+@RequestMapping(value = "cocktails")
 public class CocktailController {
 
     private final CocktailService cocktailService;
@@ -20,55 +21,56 @@ public class CocktailController {
     }
 
 
-    @GetMapping( "/cocktails/ingredients/{name_ingredient}" )
-    public ResponseEntity <List <CocktailWebOutput>> findCocktailsByIngredient(@PathVariable String name_ingredient) {
+    @RequestMapping(method = RequestMethod.GET,params ="name_ingredient" )
+    public ResponseEntity  findCocktailsByIngredient(@RequestParam("name_ingredient") String name_ingredient) {
         return ResponseEntity.ok().body(cocktailService.
                 findByIngredientsContaining(name_ingredient));
     }
 
-    @GetMapping( "/cocktails/author/{name_author}" )
-    public ResponseEntity <List <CocktailWebOutput>> findCocktailsBYAuthor(@PathVariable String name_author) {
+    @RequestMapping( method = RequestMethod.GET,params ="name_author" )
+    public ResponseEntity  findCocktailsBYAuthor(@QueryParam("name_author") String name_author) {
         return ResponseEntity.
                 ok().body(cocktailService.
                 findbyAuthor(name_author));
     }
 
 
-    @GetMapping( "/cocktails/" )
-    public ResponseEntity <List <CocktailWebOutput>> getAllCocktails() {
+    @GetMapping
+    public ResponseEntity  getAllCocktails() {
         return ResponseEntity.
                 ok().body(cocktailService.getAllCocktail());
 
     }
 
-    @PostMapping( "cocktails/" )
+    @PostMapping
     public ResponseEntity saveCocktail(@RequestBody CocktailWeb cocktailWeb) {
         cocktailService.creatCocktail(cocktailWeb);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping( "/cocktails/{id}" )
-    public ResponseEntity <CocktailWebOutput> getCocktailById(@PathVariable Long id) {
+    @RequestMapping( method = RequestMethod.GET,params ="cocktail_id" )
+    public ResponseEntity  getCocktailById(@RequestParam("cocktail_id") Long cocktail_id) {
         return ResponseEntity.
                 ok().
-                body(cocktailService.getCocktailById(id));
+                body(cocktailService.getCocktailById(cocktail_id));
 
     }
 
-    @DeleteMapping( "/cocktails/{id}" )
-    public void deleteCocktailByID(@PathVariable Long id) {
-        cocktailService.deleteCocktailById(id);
+    @RequestMapping( method = RequestMethod.DELETE,params ="cocktail_id" )
+    public void deleteCocktailByID(@RequestParam("cocktail_id") Long cocktail_id) {
+        cocktailService.deleteCocktailById(cocktail_id);
     }
 
 
-    @GetMapping( "/cocktails/title/{title}/" )
-    public ResponseEntity <List <CocktailWebOutput>> findCocktailByTitle(@PathVariable String title) {
-        return ResponseEntity.ok().body(cocktailService.findByTitle(title));
+    @RequestMapping( method = RequestMethod.GET,params ="cocktail_title" )
+    public ResponseEntity  findCocktailByTitle(@RequestParam("cocktail_title") String cocktail_title) {
+        return ResponseEntity.ok().body(cocktailService.findByTitle(cocktail_title));
     }
 
-    @PutMapping( "/cocktails/{id}" )
-    public ResponseEntity <CocktailWebOutput> updateCocktailById(@RequestBody CocktailWebOutput cocktailWebOutput, @PathVariable Long id) {
-        cocktailService.updateCocktail(cocktailWebOutput, id);
-        return ResponseEntity.ok().body(cocktailService.getCocktailById(id));
+    @RequestMapping( method = RequestMethod.PUT,params ="cocktail_id" )
+    public ResponseEntity  updateCocktailById(@RequestBody CocktailWebOutput cocktailWeb,
+                                                                 @QueryParam("cocktail_id") Long cocktail_id) {
+        cocktailService.updateCocktail(cocktailWeb, cocktail_id);
+        return ResponseEntity.ok().body(cocktailService.getCocktailById(cocktail_id));
     }
 }
