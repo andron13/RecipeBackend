@@ -1,6 +1,5 @@
 package de.cocktail.service;
 
-import ch.qos.logback.core.spi.LogbackLock;
 import de.cocktail.model.Cocktail;
 import de.cocktail.repository.CocktailRepository;
 import de.exeption.CocktailImageFileNotFoundException;
