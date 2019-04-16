@@ -72,7 +72,7 @@ public class ImageServiceImpl implements ImageService {
                    return fileName;
                }
                else {
-                   log.error("This cocktail does not exist"+" id= "+id+file.getName());
+                   log.warn("This cocktail does not exist"+" id= "+id+file.getName());
                    throw new NotFoundCocktail("This cocktail does not exist");
                }
         }
@@ -89,12 +89,14 @@ public class ImageServiceImpl implements ImageService {
                        imageBase64 = convertImageBase64(resource.getFile());
                         return imageBase64;
                     } else {
+                        log.warn(log.getName()+"File not found method loadFileAsResource " + fileName);
                         throw new CocktailImageFileNotFoundException( log.getName()+"File not found " + fileName);
                     }
                 } catch (MalformedURLException ex) {
+                    log.warn(log.getName()+"File not found method loadFileAsResource " + fileName);
                     throw new CocktailImageFileNotFoundException("File not found " + fileName);
                 } catch (IOException e) {
-                    log.debug(e.getMessage(),e.fillInStackTrace(),e.getCause());
+                    log.warn(log.getName()+ e.getMessage() + fileName);
                 }
                 return imageBase64;
             }
@@ -141,7 +143,7 @@ public class ImageServiceImpl implements ImageService {
             try {
                 Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException ex) {
-                log.error("Could not store file " + fileName + ". Please try again!");
+                log.warn("Could not store file " + fileName + ". Please try again!"+ex);
                 throw new FileStorageException("Could not store file " + fileName + ". Please try again!");
             }
             }
@@ -152,7 +154,8 @@ public class ImageServiceImpl implements ImageService {
        try {
            miniImage = ImageIO.read(new File(image_path));
        } catch (IOException e) {
-           log.debug("File read to check checkIfIsImage :="+e.getMessage()+e.getCause());
+           log.warn("File read to check checkIfIsImage :="+e.getMessage()+e.getCause());
+           e.getStackTrace();
        }
 
        if (miniImage == null) {
@@ -161,10 +164,10 @@ public class ImageServiceImpl implements ImageService {
             try {
                 Files.delete(fp);
             } catch (IOException e) {
-
                 log.debug(e.getMessage());
+                e.getStackTrace();
             }
-            log.error("Sorry! Your image is not of acceptable format. "+file.getName()+log.getName());
+            log.warn("Sorry! Your image is not of acceptable format. "+file.getName()+log.getName());
            throw  new FileStorageException("Sorry! Your image is not of acceptable format. ");
 
 
@@ -177,7 +180,8 @@ public class ImageServiceImpl implements ImageService {
         try {
             bimg = ImageIO.read(new File(image_path));
         } catch (IOException e) {
-            log.debug(e.getMessage(),e.fillInStackTrace(),e.getCause());
+            log.warn(e.getMessage(),e.fillInStackTrace(),e.getCause());
+            e.getStackTrace();
         }
       return Objects.requireNonNull(bimg).getHeight()+" x "+bimg.getWidth();
     }
@@ -197,7 +201,8 @@ public class ImageServiceImpl implements ImageService {
             imageStr= Base64.encodeBase64String(imageBytes);
 
         } catch (IOException e) {
-            log.error("File read to check convertImageBase64 ="+file.getName()+e.getMessage()+e.getCause());
+            log.warn("File read to check convertImageBase64 ="+file.getName()+e.getMessage()+e.getCause());
+            e.getStackTrace();
         }
         return imageStr;
     }
