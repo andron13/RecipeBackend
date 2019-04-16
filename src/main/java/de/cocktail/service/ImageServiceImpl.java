@@ -90,7 +90,7 @@ public class ImageServiceImpl implements ImageService {
                         return imageBase64;
                     } else {
                         log.warn(log.getName()+"File not found method loadFileAsResource " + fileName);
-                        throw new CocktailImageFileNotFoundException( log.getName()+"File not found " + fileName);
+                        throw new CocktailImageFileNotFoundException( "File not found " + fileName);
                     }
                 } catch (MalformedURLException ex) {
                     log.warn(log.getName()+"File not found method loadFileAsResource " + fileName);
