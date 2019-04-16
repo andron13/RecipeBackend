@@ -64,7 +64,7 @@ public class ImageServiceImpl implements ImageService {
     private String generateImageName(MultipartFile file, Long id) {
         Random random=new Random();
                 if(file.getOriginalFilename().contains("..")) {
-                    log.error("Sorry! Filename contains invalid path sequence " + file.getOriginalFilename());
+                    log.warn("Sorry! Filename contains invalid path sequence " + file.getOriginalFilename());
                     throw new FileStorageException("Sorry! Filename contains invalid path sequence " + file.getOriginalFilename());}
                if (cocktailRepository.findById(id).isPresent()) {
                    int name=random.nextInt((999999999 - 100000) + 1) + 100000;
