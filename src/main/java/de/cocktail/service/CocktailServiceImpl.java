@@ -5,6 +5,7 @@ import de.cocktail.repository.CocktailRepository;
 import de.cocktail.web.CocktailWeb;
 import de.cocktail.web.CocktailWebOutput;
 import de.exeption.NotFoundCocktail;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
-public class CocktailServiceImpl<Y> implements CocktailService {
+@Slf4j
+public class CocktailServiceImpl implements CocktailService {
 
     @Autowired
     private CocktailRepository cocktailRepository;
@@ -33,14 +35,14 @@ public class CocktailServiceImpl<Y> implements CocktailService {
     public CocktailWebOutput getCocktailById(Long id) {
         Optional <Cocktail> optionalRecipe = cocktailRepository.findById(id);
         if (!optionalRecipe.isPresent()) {
-            throw new NotFoundCocktail("This cocktail does not exist");
+            log.warn("This cocktail does not exist "+id);
+            throw new NotFoundCocktail("This cocktail does not exist " +id);
         } else return creatCocktailWebOutputToCocktail(optionalRecipe.get());
     }
 
-    public Y convertTheeCoctailsIntoAnotherEmbodiment(Object t, Object clas ) {
-        ModelMapper modelMapper = new ModelMapper();
-        Y y = (Y) modelMapper.map(t, clas.getClass());
-        return y;
+    private Cocktail transformingTheCocktailAnotherDTO(CocktailWebOutput cocktailWebOutput) {
+       ModelMapper modelMapper=new ModelMapper();
+      return modelMapper.map(cocktailWebOutput,Cocktail.class);
     }
 
     public void creatCocktail(CocktailWeb cocktailWeb) {
@@ -49,7 +51,10 @@ public class CocktailServiceImpl<Y> implements CocktailService {
     }
 
     public void deleteCocktailById(long id) {
-        if (!cocktailRepository.existsById(id)) throw new NotFoundCocktail("This cocktail does not exist");
+        if (!cocktailRepository.existsById(id)){
+            log.warn("This cocktail does not exist "+id);
+            throw new NotFoundCocktail("This cocktail does not exist");
+        }
         cocktailRepository.deleteById(id);
     }
 
@@ -68,14 +73,20 @@ public class CocktailServiceImpl<Y> implements CocktailService {
                 .stream()
                 .map(this::creatCocktailWebOutputToCocktail)
                 .collect(Collectors.toList());
-        if (outputList.isEmpty()) throw new NotFoundCocktail("This Ingredients not exist");
+        if (outputList.isEmpty()){
+            log.warn("This Ingredients not exist " +nameIngredient);
+            throw new NotFoundCocktail("This Ingredients not exist "+ nameIngredient);
+        }
         return outputList;
     }
 
     public List <CocktailWebOutput> findbyAuthor(String name_author) {
         List <Cocktail> byAuthorName = cocktailRepository
                 .findByAuthor_Name(name_author);
-        if (byAuthorName.isEmpty()) throw new NotFoundCocktail("This  author does not exist");
+        if (byAuthorName.isEmpty()){
+            log.warn("This  author does not exist" + name_author);
+            throw new NotFoundCocktail("This  author does not exist");
+        }
         return byAuthorName
         .stream()
                 .map(this::creatCocktailWebOutputToCocktail)
@@ -84,7 +95,7 @@ public class CocktailServiceImpl<Y> implements CocktailService {
 
     public void updateCocktail(CocktailWebOutput cocktailWebOutput, Long id) {
         Optional <Cocktail> byId = cocktailRepository.findById(id);
-        Cocktail cocktail1 = (Cocktail) convertTheeCoctailsIntoAnotherEmbodiment(cocktailWebOutput, Cocktail.class);
+        Cocktail cocktail1 = transformingTheCocktailAnotherDTO(cocktailWebOutput);
         if (byId.isPresent()) {
             cocktail1.setId(id);
             cocktailRepository.save(cocktail1);
@@ -94,6 +105,7 @@ public class CocktailServiceImpl<Y> implements CocktailService {
     public List <CocktailWebOutput> findByTitle(String title) {
         List <Cocktail> byTitle = cocktailRepository.findByTitle(title);
         if (byTitle.isEmpty()) {
+            log.warn("This title does not exist "+title);
             throw new NotFoundCocktail("This title does not exist");
         }
         return byTitle
