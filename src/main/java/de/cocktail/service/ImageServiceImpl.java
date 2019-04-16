@@ -5,6 +5,8 @@ import de.cocktail.repository.CocktailRepository;
 import de.exeption.CocktailImageFileNotFoundException;
 import de.exeption.FileStorageException;
 import de.exeption.NotFoundCocktail;
+import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -29,6 +31,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 @Service
+@Slf4j
 public class ImageServiceImpl implements ImageService {
 
     private final CocktailRepository cocktailRepository;
@@ -61,13 +64,17 @@ public class ImageServiceImpl implements ImageService {
     private String generateImageName(MultipartFile file, Long id) {
         Random random=new Random();
                 if(file.getOriginalFilename().contains("..")) {
-                    throw new FileStorageException("Sorry! Filename contains invalid path sequence " + file.getOriginalFilename());                }
+                    log.error("Sorry! Filename contains invalid path sequence " + file.getOriginalFilename());
+                    throw new FileStorageException("Sorry! Filename contains invalid path sequence " + file.getOriginalFilename());}
                if (cocktailRepository.findById(id).isPresent()) {
                    int name=random.nextInt((999999999 - 100000) + 1) + 100000;
                    String fileName = StringUtils.cleanPath(name+id.toString()+ splitExtensionFile(file));
                    return fileName;
                }
-               else throw new NotFoundCocktail("This cocktail does not exist");
+               else {
+                   log.error("This cocktail does not exist"+" id= "+id+file.getName());
+                   throw new NotFoundCocktail("This cocktail does not exist");
+               }
         }
 
         public String loadFileAsResource(String fileName,Long id) {
@@ -82,12 +89,12 @@ public class ImageServiceImpl implements ImageService {
                        imageBase64 = convertImageBase64(resource.getFile());
                         return imageBase64;
                     } else {
-                        throw new CocktailImageFileNotFoundException("File not found " + fileName);
+                        throw new CocktailImageFileNotFoundException( log.getName()+"File not found " + fileName);
                     }
                 } catch (MalformedURLException ex) {
                     throw new CocktailImageFileNotFoundException("File not found " + fileName);
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.debug(e.getMessage(),e.fillInStackTrace(),e.getCause());
                 }
                 return imageBase64;
             }
@@ -114,9 +121,14 @@ public class ImageServiceImpl implements ImageService {
             String split = file.getOriginalFilename();
             split= Objects.requireNonNull(split).substring(Objects.requireNonNull(split).lastIndexOf('.'));
             if (validatorExtensionImage(split))return split;
-            else throw new FileStorageException("Sorry! Your image is not of acceptable format. " +
-                    "Please try a .jpg , .jpeg or .png image again"+" model- xxxxx.jpg & xxxx.jpeg & xxxxx.png "
-                    +file.getOriginalFilename());
+            else {
+                log.error("Sorry! Your image is not of acceptable format. " +
+                "Please try a .jpg , .jpeg or .png image again" + " model- xxxxx.jpg & xxxx.jpeg & xxxxx.png "
+                        + file.getOriginalFilename());
+                throw new FileStorageException("Sorry! Your image is not of acceptable format. " +
+                        "Please try a .jpg , .jpeg or .png image again" + " model- xxxxx.jpg & xxxx.jpeg & xxxxx.png "
+                        + file.getOriginalFilename());
+            }
 
         }
         private boolean validatorExtensionImage(String string) {
@@ -129,16 +141,18 @@ public class ImageServiceImpl implements ImageService {
             try {
                 Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
             } catch (IOException ex) {
+                log.error("Could not store file " + fileName + ". Please try again!");
                 throw new FileStorageException("Could not store file " + fileName + ". Please try again!");
             }
             }
 
    private void checkIfIsImage(String image_path){
        BufferedImage miniImage = null;
+      new File(image_path);
        try {
            miniImage = ImageIO.read(new File(image_path));
        } catch (IOException e) {
-           e.getStackTrace();
+           log.debug("File read to check checkIfIsImage :="+e.getMessage()+e.getCause());
        }
 
        if (miniImage == null) {
@@ -148,11 +162,13 @@ public class ImageServiceImpl implements ImageService {
                 Files.delete(fp);
             } catch (IOException e) {
 
-                e.printStackTrace();
+                log.debug(e.getMessage());
             }
-            throw  new FileStorageException("Sorry! Your image is not of acceptable format. ");
+            log.error("Sorry! Your image is not of acceptable format. "+file.getName()+log.getName());
+           throw  new FileStorageException("Sorry! Your image is not of acceptable format. ");
 
-        }
+
+       }
 
     }
 
@@ -161,7 +177,7 @@ public class ImageServiceImpl implements ImageService {
         try {
             bimg = ImageIO.read(new File(image_path));
         } catch (IOException e) {
-            e.getStackTrace();
+            log.debug(e.getMessage(),e.fillInStackTrace(),e.getCause());
         }
       return Objects.requireNonNull(bimg).getHeight()+" x "+bimg.getWidth();
     }
@@ -181,7 +197,7 @@ public class ImageServiceImpl implements ImageService {
             imageStr= Base64.encodeBase64String(imageBytes);
 
         } catch (IOException e) {
-            e.getCause();
+            log.error("File read to check convertImageBase64 ="+file.getName()+e.getMessage()+e.getCause());
         }
         return imageStr;
     }
