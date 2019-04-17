@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface CocktailService<Y, T> {
+public interface CocktailService {
     List <CocktailWebOutput> getAllCocktail();
 
     CocktailWebOutput getCocktailById(Long id);
@@ -25,11 +25,11 @@ public interface CocktailService<Y, T> {
 
     List <CocktailWebOutput> findbyAuthor(String nameauthor);
 
-    void updateCocktail(CocktailWebOutput recipe, Long id);
+    void updateCocktail(CocktailWebOutput cocktailWebOutput, Long id);
 
     List <CocktailWebOutput> findByTitle(String title);
 
-    Y convertTheeCoctailsIntoAnotherEmbodiment(T t, Y clas);
+
 
 
 }

@@ -99,6 +99,7 @@ public class CocktailServiceImpl implements CocktailService {
         if (byId.isPresent()) {
             cocktail1.setId(id);
             cocktailRepository.save(cocktail1);
+            log.warn("Ubdate cocktail id "+id);
         }
     }
 

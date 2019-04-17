@@ -69,7 +69,7 @@ public class CocktailController {
 
     @RequestMapping( method = RequestMethod.PUT,params ="cocktail_id" )
     public ResponseEntity  updateCocktailById(@RequestBody CocktailWebOutput cocktailWeb,
-                                                                 @QueryParam("cocktail_id") Long cocktail_id) {
+                                              @QueryParam("cocktail_id") Long cocktail_id) {
         cocktailService.updateCocktail(cocktailWeb, cocktail_id);
         return ResponseEntity.ok().body(cocktailService.getCocktailById(cocktail_id));
     }

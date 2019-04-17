@@ -255,7 +255,7 @@ paths:
       - "pet"
       summary: "uploads an image"
       description: ""
-      operationId: "uploadFile"
+      operationId: "saveImage"
       consumes:
       - "multipart/form-data"
       produces:
