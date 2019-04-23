@@ -39,11 +39,11 @@ public class JwtTokenProvider {
         long validityInMilliseconds = 3600000;
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
-        return Jwts.builder()//
-                .setClaims(claims)//
-                .setIssuedAt(now)//
-                .setExpiration(validity)//
-                .signWith(SignatureAlgorithm.HS256, secretKey)//
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(validity)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
 
