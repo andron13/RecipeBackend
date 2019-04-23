@@ -25,23 +25,31 @@ import static java.util.stream.Collectors.toList;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserLogin implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+
     private Long id;
 
     @NotEmpty
+    @NotBlank
+
     private String username;
 
     @NotEmpty
     @NotBlank
     @Email(message = "Please provide a valid email address")
+
     private String email;
 
     @NotEmpty
+    @NotBlank
+
     private String password;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
+
     private List<String> roles = new ArrayList<>();
 
     @Override
