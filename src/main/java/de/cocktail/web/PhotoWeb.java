@@ -16,4 +16,5 @@ public class PhotoWeb {
 
 
     private String alt;
+
 }

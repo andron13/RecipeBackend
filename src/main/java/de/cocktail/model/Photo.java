@@ -13,20 +13,20 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-@Table( name = "PHOTO" )
+@Table(name = "PHOTO")
 public class Photo implements Serializable {
 
     @Id
-    @Column( name = "ID" )
-    @GeneratedValue( strategy = GenerationType.AUTO )
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column( name = "PATH" )
+    @Column(name = "PATH")
     private String patch;
 
-    @Column( name = "TITLE" )
+    @Column(name = "TITLE")
     private String title;
 
-    @Column( name = "ALT" )
+    @Column(name = "ALT")
     private String alt;
 }

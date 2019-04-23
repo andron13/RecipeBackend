@@ -1,4 +1,4 @@
-package de.sequriti.jwt;
+package de.cocktail.configSecurity;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
@@ -7,15 +7,15 @@ import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 public class JwtConfigurer extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
-@Autowired
+    @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    public JwtConfigurer(JwtTokenProvider jwtTokenProvider) {
+    JwtConfigurer(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @Override
-    public void configure(HttpSecurity http)  {
+    public void configure(HttpSecurity http) {
         JwtTokenFilter customFilter = new JwtTokenFilter(jwtTokenProvider);
         http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
     }

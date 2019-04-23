@@ -1,4 +1,4 @@
-package sequrity.Sequrityweb;
+package de.cocktail.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +19,7 @@ import java.util.List;
 import static java.util.stream.Collectors.toList;
 
 @Entity
-@Table(name="users")
+@Table(name = "UserLogin")
 @Data
 @Builder
 @NoArgsConstructor
@@ -27,15 +27,14 @@ import static java.util.stream.Collectors.toList;
 public class UserLogin implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
+    private Long id;
 
     @NotEmpty
     private String username;
 
     @NotEmpty
     @NotBlank
-    @Email(message="Please provide a valid email address")
-    @Column(unique = true,name = "EMAIL")
+    @Email(message = "Please provide a valid email address")
     private String email;
 
     @NotEmpty

@@ -15,17 +15,17 @@ import java.io.Serializable;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-@Table( name = "INGREDIENT" )
+@Table(name = "INGREDIENT")
 public class Ingredient implements Serializable {
 
     @Id
-    @Column( name = "ID" )
-    @GeneratedValue( strategy = GenerationType.AUTO )
+    @Column(name = "ID")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column( name = "TITLE" )
+    @Column(name = "TITLE")
     private String title;
 
-    @Column( name = "DESCRIPTION" )
+    @Column(name = "DESCRIPTION")
     private String description;
 }

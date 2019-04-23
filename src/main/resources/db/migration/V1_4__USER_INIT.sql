@@ -1,6 +1,6 @@
 INSERT INTO USER(id, NAME)
-VALUES (1, 'https://www.cocktail-rezepte-4u.de/rezepte/Sex-on-the-Beach.html'),
+VALUES (1, 'admin'),
 
-       (2, 'cocktail-rezepte-4u.de'),
+       (2, 'admin'),
 
-       (3, 'cocktail-rezepte');
+       (3, 'admin');

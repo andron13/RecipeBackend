@@ -1,7 +1,6 @@
-package de.cocktail.model;
+package de.cocktail.web;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,5 +12,5 @@ import java.util.List;
 @AllArgsConstructor
 public class UserCurent {
     private String name;
-    private List<String>roles;
+    private List<String> roles;
 }

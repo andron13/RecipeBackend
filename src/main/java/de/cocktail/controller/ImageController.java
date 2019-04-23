@@ -16,20 +16,20 @@ public class ImageController {
         this.imageService = imageService;
     }
 
-   @PostMapping
-    public String saveImage( @RequestBody String image,
-                             @RequestParam("cocktail_id") Long id) {
+    @PostMapping
+    public String saveImage(@RequestBody String image,
+                            @RequestParam("cocktail_id") Long id) {
         return imageService.composeFileDownloadUriAndSavetImage(id, image);
     }
 
 
     @GetMapping
     public ResponseEntity<String> sendImage(@RequestParam("fileName") String fileName,
-                                            @RequestParam ("id") Long id) {
+                                            @RequestParam("id") Long id) {
         String imageBase64 = imageService.loadFileAsResource(fileName, id);
-            return ResponseEntity.
-                    ok()
-                    .body(imageBase64);
-  }
+        return ResponseEntity.
+                ok()
+                .body(imageBase64);
+    }
 }
 

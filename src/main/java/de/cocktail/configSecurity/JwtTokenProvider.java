@@ -1,10 +1,8 @@
-package de.sequriti.jwt;
+package de.cocktail.configSecurity;
 
-import de.exeption.InvalidJwtAuthenticationException;
-import de.sequriti.CustomUserDetailsService;
+import de.exeption.PermissionDeny;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,11 +17,9 @@ import java.util.List;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${security.jwt.token.secret-key:secret}")
-    private String secretKey = "secret";
 
-    @Value("${security.jwt.token.expire-length:3600000}")
-    private long validityInMilliseconds = 3600000; // 1h
+    private  String secretKey = "Tel-Ran/bdpe03&04";
+
 
     @Autowired
     private CustomUserDetailsService userDetailsService;
@@ -39,6 +35,8 @@ public class JwtTokenProvider {
         claims.put("roles", roles);
 
         Date now = new Date();
+        // 1h
+        long validityInMilliseconds = 3600000;
         Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()//
@@ -61,7 +59,7 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7, bearerToken.length());
+            return bearerToken.substring(7);
         }
         return null;
     }
@@ -70,13 +68,10 @@ public class JwtTokenProvider {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
 
-            if (claims.getBody().getExpiration().before(new Date())) {
-                return false;
-            }
+            return !claims.getBody().getExpiration().before(new Date());
 
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new InvalidJwtAuthenticationException("Expired or invalid JWT token");
+        } catch (PermissionDeny e) {
+            throw new PermissionDeny("Expired or invalid JWT token");
         }
     }
 

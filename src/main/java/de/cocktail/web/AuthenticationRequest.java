@@ -1,4 +1,4 @@
-package de.cocktail.model;
+package de.cocktail.web;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

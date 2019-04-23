@@ -1,47 +1,39 @@
-package sequrity.webcontroler;
+package de.cocktail.controller;
 
+import de.cocktail.web.AuthenticationRequest;
+import de.cocktail.model.UserLogin;
+import de.cocktail.repository.UserRepository;
+import de.cocktail.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import sequrity.repo.UserRepository;
-import sequrity.sequriti.jwt.JwtTokenProvider;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.springframework.http.ResponseEntity.ok;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping(value = "/signin")
+
 public class AuthController {
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    SecurityService securityService;
 
-    @Autowired
-    JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     UserRepository users;
 
-    @PostMapping
-
+    @PostMapping(value = "login/")
     public ResponseEntity signin(@RequestBody AuthenticationRequest data) {
-
-        String username = data.getUsername();
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(data.getUsername(),data.getPassword()));
-
-        String token = jwtTokenProvider.createToken(username,this.users.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username " + username + "not found")).getRoles());
-
-        Map<String, String> model = new HashMap<>();
-        model.put("username", username);
-        model.put("token", token);
-        return ok(model);
+        return ResponseEntity.ok().body(securityService.logIn(data));
     }
+
+    @PostMapping(value = "user-register/")
+    public ResponseEntity createUser(@RequestBody UserLogin userLogin) {
+        securityService.runSavet(userLogin);
+        return ResponseEntity.ok().body( "User Saved");
+    }
+@DeleteMapping(value = "/closeaccount",params = "username")
+    public ResponseEntity deleteByUserName(@RequestParam String username){
+        securityService.clouseAccountUserByName(username);
+        return ResponseEntity.ok().build();
 }
+
+}
+

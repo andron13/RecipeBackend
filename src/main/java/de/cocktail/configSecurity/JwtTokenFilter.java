@@ -1,4 +1,4 @@
-package de.sequriti.jwt;
+package de.cocktail.configSecurity;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

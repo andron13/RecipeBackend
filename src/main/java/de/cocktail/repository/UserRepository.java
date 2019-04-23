@@ -1,13 +1,13 @@
-package sequrity.repo;
+package de.cocktail.repository;
 
 
+import de.cocktail.model.UserLogin;
 import org.springframework.data.jpa.repository.JpaRepository;
-import sequrity.Sequrityweb.User;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<UserLogin, Long> {
 
-    Optional<User> findByUsername(String username);
+    Optional<UserLogin> findByUsername(String username);
 
 }

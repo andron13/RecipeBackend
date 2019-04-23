@@ -22,7 +22,7 @@ public class CocktailWebOutput {
 
     private Userweb author;
 
-    private List <IngredientWeb> ingredients;
+    private List<IngredientWeb> ingredients;
 
     private int prepTimeMinute;
 

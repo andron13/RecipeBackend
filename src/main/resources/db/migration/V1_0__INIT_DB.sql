@@ -1,3 +1,4 @@
+
 create table COCKTAIL
 (
   ID           bigint       not null auto_increment,

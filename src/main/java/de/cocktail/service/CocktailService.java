@@ -3,17 +3,18 @@ package de.cocktail.service;
 import de.cocktail.model.Cocktail;
 import de.cocktail.web.CocktailWeb;
 import de.cocktail.web.CocktailWebOutput;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public interface CocktailService {
-    List <CocktailWebOutput> getAllCocktail();
+    List<CocktailWebOutput> getAllCocktail();
 
     CocktailWebOutput getCocktailById(Long id);
 
-    void creatCocktail(CocktailWeb cocktailWeb);
+    String creatCocktail(CocktailWeb cocktailWeb, UserDetails userDetails);
 
     void deleteCocktailById(long id);
 
@@ -21,15 +22,13 @@ public interface CocktailService {
 
     CocktailWebOutput creatCocktailWebOutputToCocktail(Cocktail cocktail);
 
-    List <CocktailWebOutput> findByIngredientsContaining(String nameIngredient);
+    List<CocktailWebOutput> findByIngredientsContaining(String nameIngredient);
 
-    List <CocktailWebOutput> findbyAuthor(String nameauthor);
+    List<CocktailWebOutput> findbyAuthor(String nameauthor);
 
-    void updateCocktail(CocktailWebOutput cocktailWebOutput, Long id);
+    void updateCocktail(CocktailWebOutput cocktailWebOutput, Long id, UserDetails userDetails);
 
-    List <CocktailWebOutput> findByTitle(String title);
-
-
+    List<CocktailWebOutput> findByTitle(String title);
 
 
 }

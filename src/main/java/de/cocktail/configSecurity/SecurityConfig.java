@@ -1,7 +1,5 @@
-package de.cocktail.config;
+package de.cocktail.configSecurity;
 
-import de.sequriti.jwt.JwtConfigurer;
-import de.sequriti.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,10 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST,"/login/").permitAll()
-                .antMatchers(HttpMethod.POST,"/user-register/").permitAll()
+                .antMatchers(HttpMethod.POST, "/login/").permitAll()
+                .antMatchers(HttpMethod.POST, "/user-register/").permitAll()
                 .antMatchers(HttpMethod.GET).permitAll()
-                .antMatchers(HttpMethod.GET,"/me").authenticated()
                 .antMatchers(HttpMethod.DELETE).hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT).authenticated()
                 .antMatchers(HttpMethod.POST).authenticated()

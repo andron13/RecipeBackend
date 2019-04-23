@@ -1,70 +1,94 @@
 package de.cocktail.service;
 
+import de.cocktail.configSecurity.JwtTokenProvider;
+import de.cocktail.web.AuthenticationRequest;
+import de.cocktail.web.UserCurent;
 import de.cocktail.model.UserLogin;
 import de.cocktail.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.AuditorAware;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import de.exeption.PermissionDeny;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.NotFoundException;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
-import static org.springframework.http.ResponseEntity.ok;
 
 @Service
-public class SqurityService {
+@Slf4j
+public class SecurityServiceImpl implements SecurityService {
 
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    public String runSavet(UserLogin userLogin) {
+    private final PasswordEncoder passwordEncoder;
+
+    private final
+    AuthenticationManager authenticationManager;
+
+    private final
+    JwtTokenProvider jwtTokenProvider;
+
+    public SecurityServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
+
+
+    public void runSavet(UserLogin userLogin) {
         if (!userRepository.findByUsername(userLogin.getUsername()).isPresent()) {
-            if (userLogin.getRoles().contains("ROLE_USER")) {
                 this.userRepository.save(UserLogin.builder()
                         .username(userLogin.getUsername())
                         .email(userLogin.getEmail())
                         .password(this.passwordEncoder.encode(userLogin.getPassword()))
-                        .roles(userLogin.getRoles())
-                        .build()
-                );
-            }
-            if (userLogin.getRoles().contains("ROLE_ADMIN")) {
+                        .roles(new ArrayList<String>(Collections.singleton("ROLE_USER")))
+                        .build());
 
-                this.userRepository.save(UserLogin.builder()
-                        .username(userLogin.getUsername())
-                        .email(userLogin.getEmail())
-                        .password(this.passwordEncoder.encode(userLogin.getPassword()))
-                        .roles(Arrays.asList("ROLE_USER", "ROLE_ADMIN"))
-                        .build()
-                );
-            }
-            return "user savet";
-        } else return "user is Present";
+        } else throw   new PermissionDeny( "User is Present");
 
     }
 
-    public Map<Object, Object> currentUser(@AuthenticationPrincipal UserDetails userDetails, HttpServletRequest request) {
-        String token = request.getHeader("Authorization");
-        Map<Object, Object> model = new HashMap<>();
-        model.put("username", userDetails.getUsername());
-        model.put("roles", userDetails.getAuthorities()
-                .stream()
-                .map(a -> ((GrantedAuthority) a).getAuthority())
-                .collect(toList())
-        );
-        return model;
+    public UserCurent currentUser(UserDetails userDetails) {
+        return new UserCurent(userDetails.getUsername(),
+                new ArrayList<String>(userDetails.getAuthorities()
+                        .stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(toList())));
     }
-    public
+
+    public Map<String, String> logIn(AuthenticationRequest data) {
+        String username = data.getUsername();
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(data.getUsername(), data.getPassword()));
+        Optional<UserLogin> byUsername = userRepository.findByUsername(username);
+        if (byUsername.isPresent()) {
+            String token = jwtTokenProvider.createToken(username, byUsername.get().getRoles());
+
+            Map<String, String> model = new HashMap<>();
+            model.put("username", username);
+            model.put("token", token);
+            return model;
+        } else {
+            log.warn("Username " + username + "not found");
+            new UsernameNotFoundException("Username " + username + "not found");
+            return null;
+        }
+    }
+    public void clouseAccountUserByName(String username){
+        Optional<UserLogin> byUsername = userRepository.findByUsername(username);
+        if (byUsername.isPresent()){
+            userRepository.deleteById(byUsername.get().getId());
+        }else{
+            log.warn("Username " + username + "not found");
+            throw new UsernameNotFoundException("Username " + username + "not found");
+        }
+
+    }
 }

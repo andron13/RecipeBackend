@@ -1,4 +1,4 @@
-package de.sequriti;
+package de.cocktail.configSecurity;
 
 import de.cocktail.model.UserLogin;
 import org.springframework.context.annotation.Bean;
@@ -24,6 +24,7 @@ public class AuditorAwar {
                 .map(Authentication::getPrincipal)
                 .map(UserLogin.class::cast);
     }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();

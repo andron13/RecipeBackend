@@ -1,4 +1,4 @@
-package de.sequriti;
+package de.cocktail.configSecurity;
 
 
 import de.cocktail.repository.UserRepository;

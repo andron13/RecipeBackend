@@ -1,9 +1,8 @@
-package de.sequriti.jwt;
+package de.exeption;
 
-import org.springframework.security.core.AuthenticationException;
 
-public class InvalidJwtAuthenticationException extends AuthenticationException {
-    public InvalidJwtAuthenticationException(String e) {
-        super(e);
+public class InvalidJwtAuthenticationException extends RuntimeException {
+    public InvalidJwtAuthenticationException(String string) {
+        super(string);
     }
 }
