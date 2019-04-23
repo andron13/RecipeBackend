@@ -1,21 +1,21 @@
 package de.cocktail.service;
 
 import de.cocktail.model.Cocktail;
-import de.cocktail.web.UserCurent;
 import de.cocktail.repository.CocktailRepository;
 import de.cocktail.web.CocktailWeb;
 import de.cocktail.web.CocktailWebOutput;
+import de.cocktail.web.UserCurent;
 import de.exeption.NotFoundCocktail;
 import de.exeption.PermissionDeny;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.TemporalType;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -62,10 +62,28 @@ public class CocktailServiceImpl implements CocktailService {
         return "Who created this Cocktail =" + userCurent.getName() + userCurent.getRoles();
     }
 
-    public void deleteCocktailById(long id) {
+    public void deleteCocktailById(Long id) {
         if (!cocktailRepository.existsById(id)) {
             log.warn("This cocktail does not exist " + id);
             throw new NotFoundCocktail("This cocktail does not exist");
+        }
+        Optional<Cocktail> byId = cocktailRepository.findById(id);
+
+        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
+        String nameFile = "";
+        if (byId.isPresent()) {
+            Cocktail cocktail = byId.get();
+            nameFile = cocktail.getImage().getPatch().substring(43);
+        }
+
+
+        try {
+            File file = new File(
+                    ("src" + File.separator + "main" + File.separator + "resources" + File.separator + "image" + File.separator + id.toString()));
+            FileUtils.deleteDirectory(file);
+        } catch (IOException e) {
+            log.warn(nameFile + id + "  Image is delete");
+            e.printStackTrace();
         }
         cocktailRepository.deleteById(id);
     }
@@ -134,4 +152,6 @@ public class CocktailServiceImpl implements CocktailService {
                 .map(this::creatCocktailWebOutputToCocktail)
                 .collect(Collectors.toList());
     }
+
+
 }

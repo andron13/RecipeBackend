@@ -16,7 +16,7 @@ public interface CocktailService {
 
     String creatCocktail(CocktailWeb cocktailWeb, UserDetails userDetails);
 
-    void deleteCocktailById(long id);
+    void deleteCocktailById(Long id);
 
     Cocktail creatCocktailToCocktailWeb(CocktailWeb cocktailWeb);
 

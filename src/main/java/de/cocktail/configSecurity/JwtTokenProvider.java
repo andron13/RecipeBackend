@@ -1,7 +1,10 @@
 package de.cocktail.configSecurity;
 
 import de.exeption.PermissionDeny;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,7 +21,7 @@ import java.util.List;
 public class JwtTokenProvider {
 
 
-    private  String secretKey = "Tel-Ran/bdpe03&04";
+    private String secretKey = "Tel-Ran/bdpe03&04";
 
 
     @Autowired
