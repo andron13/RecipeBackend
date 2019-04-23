@@ -63,26 +63,18 @@ public class CocktailServiceImpl implements CocktailService {
     }
 
     public void deleteCocktailById(Long id) {
+
         if (!cocktailRepository.existsById(id)) {
             log.warn("This cocktail does not exist " + id);
             throw new NotFoundCocktail("This cocktail does not exist");
         }
-        Optional<Cocktail> byId = cocktailRepository.findById(id);
-
-        ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-        String nameFile = "";
-        if (byId.isPresent()) {
-            Cocktail cocktail = byId.get();
-            nameFile = cocktail.getImage().getPatch().substring(43);
-        }
-
-
         try {
             File file = new File(
-                    ("src" + File.separator + "main" + File.separator + "resources" + File.separator + "image" + File.separator + id.toString()));
+                    ("src" + File.separator + "main" + File.separator + "resources"
+                            + File.separator + "image" + File.separator + id.toString()));
             FileUtils.deleteDirectory(file);
         } catch (IOException e) {
-            log.warn(nameFile + id + "  Image is delete");
+            log.warn("Folder= " + id + "  Image is delete");
             e.printStackTrace();
         }
         cocktailRepository.deleteById(id);
